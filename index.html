@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vodimind Kerndiagnose</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+  <!-- SCREEN: Intro / Basis -->
+  <div id="screen-intro" class="screen active">
+    <div class="page-wrap">
+      <header class="site-header">
+        <div class="logo-mark">V</div>
+        <span class="logo-text">Vodimind</span>
+      </header>
+      <main class="intro-main">
+        <div class="intro-card">
+          <h1>Kerndiagnose</h1>
+          <p class="intro-text">De onderstaande vragen gaan over uw dieet en wat u daar van vindt. Kies de uitspraak die het beste bij u past. Ook als u nog niet begonnen bent met het dieet, probeer dan de vragen toch in te vullen. Het is het beste om zo eerlijk mogelijk te antwoorden. Er zijn geen foute of goede antwoorden, het gaat om uw mening.</p>
+          <div class="basis-fields">
+            <div class="field-group">
+              <label for="input-naam">Naam</label>
+              <input type="text" id="input-naam" placeholder="Uw naam" autocomplete="off" />
+            </div>
+            <div class="field-group">
+              <label>Geslacht</label>
+              <div class="gender-buttons">
+                <button type="button" class="gender-btn" data-value="man">Man</button>
+                <button type="button" class="gender-btn" data-value="vrouw">Vrouw</button>
+              </div>
+            </div>
+          </div>
+          <button id="btn-start" class="btn-primary" disabled>Begin assessment</button>
+          <p id="intro-error" class="field-error hidden">Vul uw naam in en selecteer uw geslacht.</p>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- SCREEN: Questions -->
+  <div id="screen-questions" class="screen">
+    <div class="page-wrap">
+      <header class="site-header">
+        <div class="logo-mark">V</div>
+        <span class="logo-text">Vodimind</span>
+        <div class="progress-wrap">
+          <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
+          <span id="progress-label" class="progress-label">Vraag 1</span>
+        </div>
+      </header>
+      <main class="question-main">
+        <div id="question-card" class="question-card">
+          <!-- Injected by JS -->
+        </div>
+        <div class="question-nav">
+          <button id="btn-prev" class="btn-secondary">← Vorige</button>
+          <button id="btn-next" class="btn-primary" disabled>Volgende →</button>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- SCREEN: Results -->
+  <div id="screen-results" class="screen">
+    <div class="page-wrap">
+      <header class="site-header">
+        <div class="logo-mark">V</div>
+        <span class="logo-text">Vodimind</span>
+        <button id="btn-download" class="btn-download">↓ Download PDF</button>
+      </header>
+      <main class="results-main">
+        <div id="results-content">
+          <div class="results-header">
+            <h1>Diagnose Resultaten</h1>
+            <p id="results-subtitle" class="results-subtitle"></p>
+          </div>
+          <section class="bars-section">
+            <h2>Overzicht</h2>
+            <div id="bars-container" class="bars-container"></div>
+          </section>
+          <section class="text-section">
+            <h2>Diagnose</h2>
+            <div id="diag-text" class="diag-text"></div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- PDF PRINT LAYOUT (hidden) -->
+  <div id="pdf-layout" class="pdf-layout">
+    <div class="pdf-header">
+      <div class="pdf-logo">Vodimind Kerndiagnose</div>
+      <div class="pdf-meta">
+        <span id="pdf-naam"></span> &nbsp;|&nbsp; <span id="pdf-datum"></span>
+      </div>
+    </div>
+    <h2 class="pdf-section-title">Overzicht scores</h2>
+    <div id="pdf-bars"></div>
+    <h2 class="pdf-section-title">Diagnose</h2>
+    <div id="pdf-text"></div>
+    <div class="pdf-footer">Vodimind &copy; <span id="pdf-year"></span> &nbsp;|&nbsp; Faculteit Sociale Wetenschappen</div>
+  </div>
+
+  <script src="js/questions.js"></script>
+  <script src="js/scoring.js"></script>
+  <script src="js/messages.js"></script>
+  <script src="js/assembler.js"></script>
+  <script src="js/renderer.js"></script>
+  <script src="js/pdf.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
