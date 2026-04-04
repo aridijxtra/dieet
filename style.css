@@ -179,7 +179,7 @@ body {
 
 .gender-btn {
   padding: 11px 28px;
-  border: 1.5px solid var(--paper-mid);
+  border: 2px solid var(--paper-mid);
   border-radius: 8px;
   background: var(--paper);
   font-family: var(--font-body);
@@ -188,13 +188,23 @@ body {
   color: var(--ink-soft);
   cursor: pointer;
   transition: all 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
 }
 
-.gender-btn:hover { border-color: var(--accent); color: var(--accent); }
-.gender-btn.selected {
-  background: var(--accent);
+.gender-btn:hover {
   border-color: var(--accent);
-  color: #fff;
+  color: var(--accent);
+  background: var(--accent-light);
+}
+
+.gender-btn.selected {
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: #fff !important;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(45,90,142,0.25);
 }
 
 /* ── BUTTONS ─────────────────────────────────────────── */
@@ -222,8 +232,11 @@ body {
 }
 
 .btn-primary:disabled {
-  opacity: 0.4;
+  opacity: 0.35;
   cursor: not-allowed;
+  background: var(--ink-light);
+  box-shadow: none;
+  transform: none;
 }
 
 .btn-secondary {

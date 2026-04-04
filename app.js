@@ -38,7 +38,8 @@
   inputNaam.addEventListener('input', checkIntroReady);
 
   genderBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
       genderBtns.forEach(b => b.classList.remove('selected'));
       btn.classList.add('selected');
       userGeslacht = btn.dataset.value;
