@@ -605,3 +605,16 @@ body {
   .intro-card h1 { font-size: 1.8rem; }
   .progress-bar { width: 100px; }
 }
+
+/* ── OPTION RADIO INDICATOR ──────────────────────────────── */
+.option-radio {
+  font-size: 1.1rem;
+  color: var(--ink-light);
+  flex-shrink: 0;
+  width: 20px;
+  text-align: center;
+  transition: color 0.15s;
+}
+.option-item.selected .option-radio {
+  color: var(--accent);
+}
