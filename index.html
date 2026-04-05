@@ -7,13 +7,100 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
-CSSEOF
-cat /mnt/user-data/outputs/vodimind/style.css >> /mnt/user-data/outputs/vodimind/index.html
-echo '</style>' >> /mnt/user-data/outputs/vodimind/index.html
-echo "CSS done"</head>
+:root {
+  --ink:#1a1a2e; --ink-soft:#4a4a6a; --ink-light:#8888aa;
+  --paper:#faf9f7; --paper-warm:#f3f0eb; --paper-mid:#e8e4dc;
+  --accent:#2d5a8e; --accent-light:#e8f0f9;
+  --green:#2e7d52; --green-bg:#eaf5ee;
+  --orange:#c46a00; --orange-bg:#fff3e0;
+  --red:#b0292a; --red-bg:#fdecea;
+  --radius:12px;
+  --font-display:'Playfair Display',Georgia,serif;
+  --font-body:'Source Sans 3','Segoe UI',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px}
+body{font-family:var(--font-body);background:var(--paper);color:var(--ink);min-height:100vh}
+.screen{display:none;min-height:100vh}
+.screen.active{display:block}
+.page-wrap{max-width:860px;margin:0 auto;padding:0 24px 60px}
+.site-header{display:flex;align-items:center;gap:12px;padding:24px 0 32px;border-bottom:1px solid var(--paper-mid);margin-bottom:48px}
+.logo-mark{width:36px;height:36px;background:var(--accent);color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:20px;font-weight:700}
+.logo-text{font-family:var(--font-display);font-size:20px;font-weight:600;color:var(--ink)}
+.progress-wrap{margin-left:auto;display:flex;align-items:center;gap:12px}
+.progress-bar{width:160px;height:4px;background:var(--paper-mid);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 0.4s ease;width:0%}
+.progress-label{font-size:13px;color:var(--ink-light);white-space:nowrap}
+.intro-card{background:#fff;border-radius:var(--radius);padding:52px;box-shadow:0 8px 32px rgba(26,26,46,.12);border:1px solid var(--paper-mid)}
+.intro-card h1{font-family:var(--font-display);font-size:2.4rem;font-weight:700;margin-bottom:20px}
+.intro-text{font-size:1rem;line-height:1.75;color:var(--ink-soft);margin-bottom:40px;max-width:580px}
+.basis-fields{display:flex;flex-direction:column;gap:24px;margin-bottom:36px}
+.field-group label{display:block;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px}
+.field-group input{width:100%;max-width:360px;padding:13px 16px;border:1.5px solid var(--paper-mid);border-radius:8px;font-family:var(--font-body);font-size:1rem;color:var(--ink);background:var(--paper);outline:none;transition:border-color .2s}
+.field-group input:focus{border-color:var(--accent)}
+.gender-buttons{display:flex;gap:12px}
+.gender-btn{padding:11px 28px;border:2px solid var(--paper-mid);border-radius:8px;background:var(--paper);font-family:var(--font-body);font-size:.95rem;font-weight:500;color:var(--ink-soft);cursor:pointer;transition:all .2s}
+.gender-btn:hover{border-color:var(--accent);color:var(--accent)}
+.gender-btn.selected{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.btn-primary{display:inline-flex;align-items:center;padding:14px 32px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-family:var(--font-body);font-size:1rem;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-primary:hover:not(:disabled){background:#1e4070;transform:translateY(-1px)}
+.btn-primary:disabled{opacity:.35;cursor:not-allowed;background:#aaa}
+.btn-secondary{display:inline-flex;align-items:center;padding:13px 24px;background:transparent;color:var(--ink-soft);border:1.5px solid var(--paper-mid);border-radius:8px;font-family:var(--font-body);font-size:1rem;font-weight:500;cursor:pointer;transition:all .2s}
+.btn-secondary:hover{border-color:var(--ink-soft);color:var(--ink)}
+.btn-download{margin-left:auto;padding:10px 22px;background:var(--green);color:#fff;border:none;border-radius:8px;font-family:var(--font-body);font-size:.9rem;font-weight:600;cursor:pointer}
+.field-error{color:var(--red);font-size:.875rem;margin-top:12px}
+.hidden{display:none!important}
+.question-card{background:#fff;border-radius:var(--radius);padding:48px 52px;box-shadow:0 8px 32px rgba(26,26,46,.12);border:1px solid var(--paper-mid);margin-bottom:32px;min-height:320px}
+.question-number{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+.question-text{font-family:var(--font-display);font-size:1.35rem;font-weight:600;line-height:1.5;color:var(--ink);margin-bottom:8px}
+.question-sub{font-size:.9rem;color:var(--ink-light);margin-bottom:32px;line-height:1.6}
+.options-list{display:flex;flex-direction:column;gap:10px;margin-top:24px}
+.option-item{display:flex;align-items:center;gap:14px;padding:14px 18px;border:1.5px solid var(--paper-mid);border-radius:8px;cursor:pointer;transition:all .18s;user-select:none}
+.option-item:hover{border-color:var(--accent);background:var(--accent-light)}
+.option-item.selected{border-color:var(--accent);background:var(--accent-light)}
+.option-dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--paper-mid);flex-shrink:0;transition:all .15s;background:#fff}
+.option-item.selected .option-dot{background:var(--accent);border-color:var(--accent)}
+.option-check{width:18px;height:18px;border-radius:4px;border:2px solid var(--paper-mid);flex-shrink:0;transition:all .15s;background:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff}
+.option-item.selected .option-check{background:var(--accent);border-color:var(--accent)}
+.option-label{font-size:.975rem;color:var(--ink);line-height:1.4}
+.checkbox-note{font-size:.875rem;color:var(--ink-light);margin-top:8px;font-style:italic}
+.question-nav{display:flex;justify-content:space-between;align-items:center}
+.results-header{margin-bottom:48px}
+.results-header h1{font-family:var(--font-display);font-size:2.2rem;font-weight:700;margin-bottom:8px}
+.results-subtitle{font-size:1rem;color:var(--ink-soft)}
+.bars-section,.text-section{background:#fff;border-radius:var(--radius);padding:40px 48px;box-shadow:0 2px 8px rgba(26,26,46,.08);border:1px solid var(--paper-mid);margin-bottom:28px}
+.bars-section h2,.text-section h2{font-family:var(--font-display);font-size:1.25rem;font-weight:600;margin-bottom:28px;padding-bottom:16px;border-bottom:1px solid var(--paper-mid)}
+.bars-container{display:flex;flex-direction:column;gap:20px}
+.bar-row{display:grid;grid-template-columns:190px 1fr 90px;align-items:center;gap:16px}
+.bar-label{font-size:.875rem;font-weight:600;color:var(--ink-soft)}
+.bar-track{height:14px;background:var(--paper-warm);border-radius:7px;overflow:hidden}
+.bar-fill{height:100%;border-radius:7px;transition:width .8s cubic-bezier(.4,0,.2,1);width:0%}
+.bar-fill.green{background:var(--green)}
+.bar-fill.orange{background:var(--orange)}
+.bar-fill.red{background:var(--red)}
+.bar-badge{font-size:.8rem;font-weight:700;padding:4px 10px;border-radius:20px;text-align:center}
+.bar-badge.green{background:var(--green-bg);color:var(--green)}
+.bar-badge.orange{background:var(--orange-bg);color:var(--orange)}
+.bar-badge.red{background:var(--red-bg);color:var(--red)}
+.bar-tooltip{font-size:.82rem;color:var(--ink-light);grid-column:2/4;font-style:italic;margin-top:-8px}
+.diag-text{font-size:1rem;line-height:1.9;color:var(--ink-soft)}
+.pdf-layout{display:none;position:absolute;left:-9999px;top:0;width:794px;padding:60px 64px;background:#fff;font-family:sans-serif;color:#1a1a2e}
+.pdf-header{display:flex;justify-content:space-between;border-bottom:2px solid #2d5a8e;padding-bottom:20px;margin-bottom:36px}
+.pdf-logo{font-size:1.3rem;font-weight:700;color:#2d5a8e}
+.pdf-meta{font-size:.85rem;color:#4a4a6a;text-align:right}
+.pdf-section-title{font-size:1rem;font-weight:700;color:#1a1a2e;margin:28px 0 16px;padding-bottom:6px;border-bottom:1px solid #e8e4dc}
+.pdf-bar-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.pdf-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.pdf-bar-label{width:180px;font-size:.85rem;font-weight:600;color:#4a4a6a}
+.pdf-bar-tip{font-size:.85rem;color:#4a4a6a;font-style:italic}
+.pdf-diag{font-size:.92rem;line-height:1.85;color:#4a4a6a;white-space:pre-wrap}
+.pdf-footer{margin-top:48px;padding-top:12px;border-top:1px solid #e8e4dc;font-size:.75rem;color:#8888aa;text-align:center}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.intro-main,.question-main,.results-main{animation:fadeUp .4s ease both}
+</style>
+</head>
 <body>
 
-<!-- SCREEN: Intro -->
 <div id="screen-intro" class="screen active">
   <div class="page-wrap">
     <header class="site-header">
@@ -27,7 +114,7 @@ echo "CSS done"</head>
         <div class="basis-fields">
           <div class="field-group">
             <label for="input-naam">Naam</label>
-            <input type="text" id="input-naam" placeholder="Uw naam" autocomplete="off" oninput="checkIntroReady()"/>
+            <input type="text" id="input-naam" placeholder="Uw naam" autocomplete="off"/>
           </div>
           <div class="field-group">
             <label>Geslacht</label>
@@ -44,7 +131,6 @@ echo "CSS done"</head>
   </div>
 </div>
 
-<!-- SCREEN: Questions -->
 <div id="screen-questions" class="screen">
   <div class="page-wrap">
     <header class="site-header">
@@ -59,19 +145,18 @@ echo "CSS done"</head>
       <div id="question-card" class="question-card"></div>
       <div class="question-nav">
         <button type="button" id="btn-prev" class="btn-secondary" onclick="goPrev()">← Vorige</button>
-        <button type="button" id="btn-next" class="btn-primary"   onclick="goNext()" disabled>Volgende →</button>
+        <button type="button" id="btn-next" class="btn-primary" disabled onclick="goNext()">Volgende →</button>
       </div>
     </main>
   </div>
 </div>
 
-<!-- SCREEN: Results -->
 <div id="screen-results" class="screen">
   <div class="page-wrap">
     <header class="site-header">
       <div class="logo-mark">V</div>
       <span class="logo-text">Vodimind</span>
-      <button type="button" id="btn-download" class="btn-download" onclick="triggerPdf()">↓ Download PDF</button>
+      <button type="button" class="btn-download" onclick="triggerPdf()">↓ Download PDF</button>
     </header>
     <main class="results-main">
       <div class="results-header">
@@ -90,914 +175,528 @@ echo "CSS done"</head>
   </div>
 </div>
 
-<!-- PDF LAYOUT (hidden, used for export) -->
 <div id="pdf-layout" class="pdf-layout">
   <div class="pdf-header">
     <div class="pdf-logo">Vodimind Kerndiagnose</div>
-    <div class="pdf-meta"><span id="pdf-naam"></span><br/><span id="pdf-datum"></span></div>
+    <div class="pdf-meta" id="pdf-meta"></div>
   </div>
   <h2 class="pdf-section-title">Overzicht scores</h2>
   <div id="pdf-bars"></div>
   <h2 class="pdf-section-title">Diagnose</h2>
-  <div id="pdf-text"></div>
-  <div class="pdf-footer">Vodimind &copy; <span id="pdf-year"></span> &nbsp;|&nbsp; Faculteit Sociale Wetenschappen</div>
+  <div id="pdf-text" class="pdf-diag"></div>
+  <div class="pdf-footer">Vodimind &copy; Faculteit Sociale Wetenschappen</div>
 </div>
 
 <script>
-// js/questions.js
-// All questions V0–V21 with answer options and scores
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+var APP = { naam:'', geslacht:'', answers:{}, questions:[], idx:0 };
 
-const QUESTIONS = [
-  {
-    id: 'V0',
-    text: 'Bent u al met uw dieet begonnen?',
-    type: 'radio',
-    options: [
-      { label: 'Ja',  score: 1 },
-      { label: 'Nee', score: 2 }
-    ]
-  },
-  {
-    id: 'V1',
-    text: 'Hoe ging het bij u de afgelopen twee weken?',
-    sub: 'Het is belangrijk dat de dieetadviezen goed opgevolgd worden, maar soms valt dat niet mee. Daar kunnen verschillende redenen voor zijn.',
-    type: 'radio',
-    skipIf: (answers) => answers.V0 === 2,
-    options: [
-      { label: 'Ik heb me precies aan het dieet gehouden',       score: 4 },
-      { label: 'Ik heb me grotendeels aan het dieet gehouden',   score: 3 },
-      { label: 'Ik heb me maar voor een deel aan het dieet gehouden', score: 2 },
-      { label: 'Ik heb me nauwelijks aan het dieet gehouden',    score: 1 },
-      { label: 'Ik heb me helemaal niet aan het dieet gehouden', score: 0 }
-    ]
-  },
-  {
-    id: 'V2',
-    text: 'Als u zich niet helemaal aan het dieet kon houden, hoe kwam dat?',
-    sub: 'U kunt meer dan één reden invullen.',
-    type: 'checkbox',
-    skipIf: (answers) => answers.V0 === 2,
-    optional: true,
-    options: [
-      { label: 'Ik had weinig tijd',                  value: 'weinig tijd' },
-      { label: 'Ik ben het vergeten',                 value: 'vergeten' },
-      { label: 'Ik had niet voldoende geld',          value: 'onvoldoende geld' },
-      { label: 'Ik was niet erg gemotiveerd',         value: 'weinig motivatie' },
-      { label: 'Ik had geen klachten meer',           value: 'geen klachten meer' },
-      { label: 'Ik had andere dingen aan mijn hoofd', value: 'andere dingen aan het hoofd' },
-      { label: 'Ik wist niet goed hoe het moest',     value: 'onduidelijkheid over het dieet' }
-    ]
-  },
-  {
-    id: 'V3',
-    text: 'Ik weet wat het dieet inhoudt.',
-    type: 'radio',
-    options: [
-      { label: 'Ik weet precies wat het dieet inhoudt',    score: 4 },
-      { label: 'Ik weet wat het dieet inhoudt',            score: 3 },
-      { label: 'Ik weet een beetje wat het dieet inhoudt', score: 2 },
-      { label: 'Ik weet niet precies wat het dieet inhoudt', score: 1 },
-      { label: 'Ik weet niet wat het dieet inhoudt',       score: 0 }
-    ]
-  },
-  {
-    id: 'V4',
-    text: 'Ik ben van plan om het dieet in de komende tijd precies te volgen.',
-    type: 'radio',
-    options: [
-      { label: 'Dat ben ik heel sterk van plan',    score: 4 },
-      { label: 'Dat ben ik van plan',               score: 3 },
-      { label: 'Dat ben ik een beetje van plan',    score: 2 },
-      { label: 'Dat ben ik niet echt van plan',     score: 1 },
-      { label: 'Dat ben ik echt niet van plan',     score: 0 }
-    ]
-  },
-  {
-    id: 'V5',
-    text: 'Ik ben gemotiveerd om het dieet te volgen.',
-    type: 'radio',
-    options: [
-      { label: 'Ik ben heel erg gemotiveerd',      score: 4 },
-      { label: 'Ik ben gemotiveerd',               score: 3 },
-      { label: 'Ik ben een beetje gemotiveerd',    score: 2 },
-      { label: 'Ik ben niet erg gemotiveerd',      score: 1 },
-      { label: 'Ik ben helemaal niet gemotiveerd', score: 0 }
-    ]
-  },
-  {
-    id: 'V6',
-    text: 'Het heeft zin voor mij om het dieet te volgen.',
-    type: 'radio',
-    options: [
-      { label: 'Ja, dat heeft veel zin voor mij',         score: 3 },
-      { label: 'Ja, dat heeft zin voor mij',              score: 2 },
-      { label: 'Ja, dat heeft een beetje zin voor mij',   score: 1 },
-      { label: 'Nee, dat heeft geen zin voor mij',        score: 0 }
-    ]
-  },
-  {
-    id: 'V7',
-    text: 'Ik krijg minder klachten als ik het dieet volg.',
-    type: 'radio',
-    options: [
-      { label: 'Ja, dan krijg ik veel minder klachten',  score: 3 },
-      { label: 'Ja, dan krijg ik minder klachten',       score: 2 },
-      { label: 'Ja, dan krijg ik wel wat minder klachten', score: 1 },
-      { label: 'Nee, ik krijg niet minder klachten',     score: 0 }
-    ]
-  },
-  {
-    id: 'V8',
-    text: 'Het is beter voor mijn gezondheid om het dieet te volgen.',
-    type: 'radio',
-    options: [
-      { label: 'Ja, dat is veel beter voor mijn gezondheid',      score: 3 },
-      { label: 'Ja, dat is beter voor mijn gezondheid',           score: 2 },
-      { label: 'Ja, dat is een beetje beter voor mijn gezondheid', score: 1 },
-      { label: 'Nee, dat is niet beter voor mijn gezondheid',     score: 0 }
-    ]
-  },
-  {
-    id: 'V9',
-    text: 'Het dieet volgen heeft voordelen.',
-    type: 'radio',
-    options: [
-      { label: 'Ja, het dieet volgen heeft veel voordelen',    score: 3 },
-      { label: 'Ja, het dieet volgen heeft voordelen',         score: 2 },
-      { label: 'Ja, het dieet volgen heeft wel wat voordelen', score: 1 },
-      { label: 'Nee, het dieet volgen heeft geen voordelen',   score: 0 }
-    ]
-  },
-  {
-    id: 'V10',
-    text: 'Ik voel me beter als ik het dieet volg.',
-    type: 'radio',
-    options: [
-      { label: 'Ja, dan voel ik me veel beter',         score: 3 },
-      { label: 'Ja, dan voel ik me beter',              score: 2 },
-      { label: 'Ja, dan voel ik me een beetje beter',   score: 1 },
-      { label: 'Nee, dan voel ik me niet beter',        score: 0 }
-    ]
-  },
-  {
-    id: 'V11',
-    text: 'Ik voel me lichamelijk sterker als ik het dieet volg.',
-    type: 'radio',
-    options: [
-      { label: 'Ja, dan voel ik me veel sterker',       score: 3 },
-      { label: 'Ja, dan voel ik me sterker',            score: 2 },
-      { label: 'Ja, dan voel ik me een beetje sterker', score: 1 },
-      { label: 'Nee, dan voel ik me niet sterker',      score: 0 }
-    ]
-  },
-  {
-    id: 'V12',
-    text: 'Het lukt me om de komende tijd het dieet precies te volgen.',
-    type: 'radio',
-    options: [
-      { label: 'Dat lukt me zeker wel',         score: 3 },
-      { label: 'Dat lukt me waarschijnlijk wel', score: 2 },
-      { label: 'Dat lukt me waarschijnlijk niet', score: 1 },
-      { label: 'Dat lukt me zeker niet',         score: 0 }
-    ]
-  },
-  {
-    id: 'V13',
-    text: 'Ik kijk er tegen op om de komende tijd het dieet precies te volgen.',
-    type: 'radio',
-    options: [
-      { label: 'Daar kijk ik heel erg tegenop',      score: 0 },
-      { label: 'Daar kijk ik tegenop',               score: 1 },
-      { label: 'Daar kijk ik een beetje tegenop',    score: 2 },
-      { label: 'Daar kijk ik helemaal niet tegenop', score: 3 }
-    ]
-  },
-  {
-    id: 'V14',
-    text: 'Het is moeilijk om het dieet precies te volgen.',
-    type: 'radio',
-    options: [
-      { label: 'Dat is erg moeilijk',      score: 0 },
-      { label: 'Dat is moeilijk',          score: 1 },
-      { label: 'Dat is niet erg moeilijk', score: 2 },
-      { label: 'Dat is gemakkelijk',       score: 3 }
-    ]
-  },
-  {
-    id: 'V15',
-    text: 'Ik zal het dieet in de komende tijd precies volgen.',
-    type: 'radio',
-    options: [
-      { label: 'Ik zal het dieet precies volgen',          score: 4 },
-      { label: 'Ik zal het dieet grotendeels volgen',      score: 3 },
-      { label: 'Ik zal het dieet maar gedeeltelijk volgen', score: 2 },
-      { label: 'Ik zal het dieet een klein beetje volgen', score: 1 },
-      { label: 'Ik zal het dieet niet volgen',             score: 0 }
-    ]
-  },
-  {
-    id: 'V16',
-    text: 'Het dieet volgen heeft nadelen.',
-    type: 'radio',
-    options: [
-      { label: 'Ja, het dieet volgen heeft veel nadelen',    score: 3 },
-      { label: 'Ja, het dieet volgen heeft nadelen',         score: 2 },
-      { label: 'Ja, het dieet volgen heeft wel wat nadelen', score: 1 },
-      { label: 'Nee, het dieet volgen heeft geen nadelen',   score: 0 }
-    ]
-  },
-  {
-    id: 'V17',
-    text: 'De mensen in mijn omgeving vinden het belangrijk dat ik het dieet volg.',
-    type: 'radio',
-    options: [
-      { label: 'Dat vinden ze heel belangrijk',         score: 3 },
-      { label: 'Dat vinden ze belangrijk',              score: 2 },
-      { label: 'Dat vinden ze maar een beetje belangrijk', score: 1 },
-      { label: 'Dat vinden ze onbelangrijk',            score: 0 }
-    ]
-  },
-  {
-    id: 'V18',
-    text: 'Ik heb het gevoel dat ik wat betreft mijn dieet er alleen voor sta.',
-    type: 'radio',
-    options: [
-      { label: 'Ja, ik sta er helemaal alleen voor',    score: 0 },
-      { label: 'Ja, ik sta er grotendeels alleen voor', score: 1 },
-      { label: 'Ja, ik sta er gedeeltelijk alleen voor', score: 2 },
-      { label: 'Nee, ik sta er niet alleen voor',       score: 3 }
-    ]
-  },
-  {
-    id: 'V19',
-    text: 'De mensen in mijn omgeving helpen me om mijn dieet te volgen.',
-    sub: 'Of hoe denkt u dat het zal zijn?',
-    type: 'radio',
-    options: [
-      { label: 'Ze helpen me heel goed', score: 3 },
-      { label: 'Ze helpen me',           score: 2 },
-      { label: 'Ze helpen me een beetje', score: 1 },
-      { label: 'Ze helpen me niet',      score: 0 }
-    ]
-  },
-  {
-    id: 'V20',
-    text: 'De mensen in mijn omgeving steunen mij om mijn dieet te volgen.',
-    sub: 'Of hoe denkt u dat het zal zijn?',
-    type: 'radio',
-    options: [
-      { label: 'Ze steunen me heel goed', score: 3 },
-      { label: 'Ze steunen me',           score: 2 },
-      { label: 'Ze steunen me een beetje', score: 1 },
-      { label: 'Ze steunen me niet',      score: 0 }
-    ]
-  },
-  {
-    id: 'V21',
-    text: 'Er zijn mensen met wie ik gemakkelijk over mijn dieet kan praten.',
-    type: 'radio',
-    options: [
-      { label: 'Ja, met meerdere mensen kan ik gemakkelijk over mijn dieet praten', score: 2 },
-      { label: 'Ja, met één persoon kan ik gemakkelijk over mijn dieet praten',     score: 1 },
-      { label: 'Nee, er is niemand met wie ik gemakkelijk over mijn dieet kan praten', score: 0 }
-    ]
-  }
-];
-// js/scoring.js
-// Calculates the 5 variables and classifies them as H / M / L
-
-function mean(values) {
-  const valid = values.filter(v => v !== null && v !== undefined && !isNaN(v));
-  if (valid.length === 0) return null;
-  return valid.reduce((a, b) => a + b, 0) / valid.length;
+// ═══════════════════════════════════════════════════════
+// INTRO
+// ═══════════════════════════════════════════════════════
+function selectGender(val) {
+  APP.geslacht = val;
+  document.getElementById('btn-man').className   = 'gender-btn' + (val==='man'   ? ' selected' : '');
+  document.getElementById('btn-vrouw').className = 'gender-btn' + (val==='vrouw' ? ' selected' : '');
+  checkReady();
 }
 
-function classify(value, x, y) {
-  if (value === null || value === undefined) return null;
-  if (value > x)            return 'H';
-  if (value > y && value <= x) return 'M';
-  return 'L';
+document.getElementById('input-naam').addEventListener('input', checkReady);
+
+function checkReady() {
+  var naam = document.getElementById('input-naam').value.trim();
+  document.getElementById('btn-start').disabled = !(naam && APP.geslacht);
 }
-
-function calculateScores(answers) {
-  const a = answers;
-
-  // ── RAW SCORES ──────────────────────────────────────────
-  // Gedrag: V1 (only when V0 = 1)
-  const gedraRaw = (a.V0 === 1 && a.V1 !== undefined) ? a.V1 : null;
-
-  // Intentie: mean(V4, V5, V15)  — all on 0-4 scale → mean 0-4, thresholds x=2, y=1
-  const intentieRaw = mean([a.V4, a.V5, a.V15]);
-
-  // Pro: mean(V6–V11)  — all 0-3 → mean 0-3, thresholds x=1.75, y=0.75
-  const proRaw = mean([a.V6, a.V7, a.V8, a.V9, a.V10, a.V11]);
-
-  // Selfef: mean(V12, V13, V14) — all 0-3 → x=1.75, y=0.75
-  const selfefRaw = mean([a.V12, a.V13, a.V14]);
-
-  // Socst: mean(V17–V21) — V17-V20 on 0-3, V21 on 0-2 → x=1.75, y=0.75
-  const socstRaw = mean([a.V17, a.V18, a.V19, a.V20, a.V21]);
-
-  // ── CLASSIFICATION ───────────────────────────────────────
-  const gedrag  = classify(gedraRaw,   2,    1);     // x=2, y=1
-  const mot     = classify(intentieRaw, 2,   1);     // x=2, y=1
-  const pros    = classify(proRaw,     1.75, 0.75);  // x=1.75, y=0.75
-  const self    = classify(selfefRaw,  1.75, 0.75);
-  const soc     = classify(socstRaw,   1.75, 0.75);
-
-  // ── BAR FILL PERCENTAGES (for visual) ───────────────────
-  // Normalise each raw to 0-100%
-  const pct = (val, max) => val === null ? 0 : Math.round((val / max) * 100);
-
-  return {
-    raw: { gedra: gedraRaw, intentie: intentieRaw, pro: proRaw, selfef: selfefRaw, socst: socstRaw },
-    scores: { gedrag, mot, pros, self, soc },
-    pct: {
-      gedrag:  pct(gedraRaw,    4),
-      mot:     pct(intentieRaw, 4),
-      pros:    pct(proRaw,      3),
-      self:    pct(selfefRaw,   3),
-      soc:     pct(socstRaw,    3)
-    }
-  };
-}
-// js/messages.js
-// All pre-written diagnostic text blocks
-
-const DIAG1_TEXTS = {
-  1: '{GN} heeft zich niet aan het dieet gehouden. De cliënt geeft zelf aan dat dat vooral te maken heeft met {BARRIERE}. Ook heeft de cliënt een lage motivatie om zich aan het dieet te houden.',
-  2: '{GN} heeft zich niet aan het dieet gehouden. De cliënt geeft zelf aan dat dat vooral te maken heeft met {BARRIERE}. Ook heeft de cliënt een lage motivatie om zich aan het dieet te houden.',
-  3: '{GN} heeft zich niet aan het dieet gehouden. De cliënt geeft zelf aan dat dat vooral te maken heeft met {BARRIERE}. Dat lijkt reëel want de motivatie van de cliënt lijkt wel goed te zijn. Toch zijn er ook psychologische redenen aan te wijzen waarom de dieettrouw laag is.',
-  4: '{GN} heeft zich voor een deel aan het dieet gehouden. Dat het niet helemaal lukte heeft volgens de cliënt zelf vooral te maken met {BARRIERE}. Ook heeft de cliënt een lage motivatie om zich aan het dieet te houden.',
-  5: '{GN} heeft zich voor een deel aan het dieet gehouden. Dat het niet helemaal lukte heeft volgens de cliënt zelf vooral te maken met {BARRIERE}. Ook heeft de cliënt een lage motivatie om zich aan het dieet te houden.',
-  6: '{GN} heeft zich voor een deel aan het dieet gehouden. Dat het niet helemaal lukte heeft volgens de cliënt zelf vooral te maken met {BARRIERE}. Dat lijkt reëel want de motivatie van de cliënt lijkt wel goed te zijn. Toch zijn er ook psychologische redenen aan te wijzen waarom de dieettrouw niet optimaal is.',
-  7: '{GN} heeft zich goed aan het dieet gehouden. De motivatie om dat te blijven doen is echter laag.',
-  8: '{GN} heeft zich goed aan het dieet gehouden. De motivatie om dat te blijven doen is echter niet erg sterk.',
-  9: '{GN} heeft zich goed aan het dieet gehouden. Ook de motivatie om dat te blijven doen is sterk.'
-};
-
-const DIAG2_TEXTS = {
-  1: 'Verder heeft de cliënt een hoge score op respons-effectiviteit, op eigen-effectiviteit en op sociale steun: {g} is er van overtuigd dat het volgen van het dieet zinvol is, heeft weinig moeite met het volgen van het dieet en voelt zich sociaal voldoende gesteund. De psychologische toestand lijkt optimaal voor een goede dieettrouw.',
-  2: 'Toch lijkt de toestand niet optimaal. De cliënt heeft {DIAG3}',
-  3: 'De cliënt heeft echter een hoge score op respons-effectiviteit, op eigen-effectiviteit en op sociale steun: {g} is er van overtuigd dat het volgen van het dieet zinvol is, heeft weinig moeite met het volgen van het dieet en voelt zich sociaal voldoende gesteund.',
-  4: 'Dat kan te maken hebben met {DIAG3}'
-};
-
-const DIAG3_TEXTS = {
-  1:  'een lage score op respons-effectiviteit: {g} is er niet van overtuigd dat het volgen van het dieet zinvol is.',
-  2:  'een matige score op respons-effectiviteit: {g} is er niet echt van overtuigd dat het volgen van het dieet zinvol is.',
-  3:  'een lage score op eigen-effectiviteit: {g} vindt het moeilijk om zich aan het dieet te houden.',
-  4:  'een matige score op eigen-effectiviteit: {g} heeft moeite om zich aan het dieet te houden.',
-  5:  'een lage score op sociale steun: {g} voelt zich niet gesteund door anderen.',
-  6:  'een matige score op sociale steun: {g} voelt zich niet voldoende gesteund door anderen.',
-  7:  'een lage score op respons-effectiviteit en op eigen-effectiviteit: {g} is er niet van overtuigd dat het volgen van het dieet zinvol is en vindt het ook moeilijk om zich aan het dieet te houden.',
-  8:  'een matige score op respons-effectiviteit en een lage score op eigen-effectiviteit: {g} is er niet echt van overtuigd dat het volgen van het dieet zinvol is en vindt het ook moeilijk om zich aan het dieet te houden.',
-  9:  'een lage score op respons-effectiviteit en een matige score op eigen-effectiviteit: {g} is er niet van overtuigd dat het volgen van het dieet zinvol is en heeft ook moeite om zich aan het dieet te houden.',
-  10: 'een matige score op respons-effectiviteit en op eigen-effectiviteit: {g} is er niet echt van overtuigd dat het volgen van het dieet zinvol is en heeft ook moeite om zich aan het dieet te houden.',
-  11: 'een lage score op respons-effectiviteit en op sociale steun: {g} is er niet van overtuigd dat het volgen van het dieet zinvol is en voelt zich niet gesteund door anderen.',
-  12: 'een lage score op respons-effectiviteit en een matige score op sociale steun: {g} is er niet van overtuigd dat het volgen van het dieet zinvol is en voelt zich onvoldoende gesteund door anderen.',
-  13: 'een matige score op respons-effectiviteit en een lage score op sociale steun: {g} is er niet echt van overtuigd dat het volgen van het dieet zinvol is en voelt zich niet gesteund door anderen.',
-  14: 'een matige score op respons-effectiviteit en op sociale steun: {g} is er niet echt van overtuigd dat het volgen van het dieet zinvol is en voelt zich onvoldoende gesteund door anderen.',
-  15: 'een lage score op eigen-effectiviteit en op sociale steun: {g} vindt het moeilijk om zich aan het dieet te houden en voelt zich niet gesteund door anderen.',
-  16: 'een matige score op eigen-effectiviteit en een lage score op sociale steun: {g} heeft moeite om zich aan het dieet te houden en voelt zich niet gesteund door anderen.',
-  17: 'een lage score op eigen-effectiviteit en een matige score op sociale steun: {g} vindt het moeilijk om zich aan het dieet te houden en voelt zich onvoldoende gesteund door anderen.',
-  18: 'een matige score op eigen-effectiviteit en op sociale steun: {g} heeft moeite om zich aan het dieet te houden en voelt zich onvoldoende gesteund door anderen.',
-  19: 'een lage score op respons-effectiviteit, op eigen-effectiviteit en op sociale steun: {g} is er niet van overtuigd dat het volgen van het dieet zinvol is, vindt het moeilijk om zich aan het dieet te houden en voelt zich niet gesteund door anderen.',
-  20: 'een matige score op respons-effectiviteit en een lage score op eigen-effectiviteit en op sociale steun: {g} is er niet echt van overtuigd dat het volgen van het dieet zinvol is, vindt het moeilijk om zich aan het dieet te houden en voelt zich niet gesteund door anderen.',
-  21: 'een matige score op respons-effectiviteit en op eigen-effectiviteit en een lage score op sociale steun: {g} is er niet echt van overtuigd dat het volgen van het dieet zinvol is, heeft moeite om zich aan het dieet te houden en voelt zich niet gesteund door anderen.',
-  22: 'een matige score op respons-effectiviteit, op eigen-effectiviteit en op sociale steun: {g} is er niet echt van overtuigd dat het volgen van het dieet zinvol is, heeft moeite om zich aan het dieet te houden en voelt zich onvoldoende gesteund door anderen.',
-  23: 'een lage score op respons-effectiviteit en sociale steun en een matige score op eigen-effectiviteit: {g} is er niet van overtuigd dat het volgen van het dieet zinvol is, voelt zich niet gesteund door anderen en heeft moeite om zich aan het dieet te houden.',
-  24: 'een lage score op respons-effectiviteit en eigen-effectiviteit en een matige score op sociale steun: {g} is er niet van overtuigd dat het volgen van het dieet zinvol is, vindt het moeilijk om zich aan het dieet te houden en voelt zich onvoldoende gesteund door anderen.',
-  25: 'een matige score op respons-effectiviteit en op sociale steun en een lage score op eigen-effectiviteit: {g} is er niet echt van overtuigd dat het volgen van het dieet zinvol is, voelt zich onvoldoende gesteund door anderen en vindt het moeilijk om zich aan het dieet te houden.',
-  26: 'een lage score op respons-effectiviteit en een matige score op eigen-effectiviteit en op sociale steun: {g} is er niet van overtuigd dat het volgen van het dieet zinvol is, heeft moeite om zich aan het dieet te houden en voelt zich onvoldoende gesteund door anderen.'
-};
-
-const DIAG4_TEXTS = {
-  1:  '{GN} is niet gemotiveerd om zich aan het dieet te houden. Wel heeft de cliënt het gevoel goed te weten wat het dieet inhoudt. De lage motivatie kan te maken hebben met {DIAG3}',
-  2:  '{GN} is niet gemotiveerd om zich aan het dieet te houden. Ook weet de cliënt niet precies wat het dieet inhoudt. De lage motivatie kan te maken hebben met {DIAG3}',
-  3:  '{GN} is niet sterk gemotiveerd om zich aan het dieet te houden. Wel heeft de cliënt het gevoel goed te weten wat het dieet inhoudt. De matige motivatie kan te maken hebben met {DIAG3}',
-  4:  '{GN} is niet sterk gemotiveerd om zich aan het dieet te houden. Ook weet de cliënt niet precies wat het dieet inhoudt. De matige motivatie kan te maken hebben met {DIAG3}',
-  5:  '{GN} is niet gemotiveerd om zich aan het dieet te houden. Wel weet de cliënt goed wat het dieet inhoudt. Inconsistent met de lage motivatie zijn de hoge scores op respons-effectiviteit, op eigen-effectiviteit en op sociale steun: {g} is er van overtuigd dat het volgen van het dieet zinvol is, heeft weinig moeite met het volgen van het dieet en voelt zich sociaal voldoende gesteund.',
-  6:  '{GN} is niet gemotiveerd om zich aan het dieet te houden. Ook weet de cliënt niet precies wat het dieet inhoudt. Inconsistent met de lage motivatie zijn de hoge scores op respons-effectiviteit, op eigen-effectiviteit en op sociale steun: {g} is er van overtuigd dat het volgen van het dieet zinvol is, heeft weinig moeite met het volgen van het dieet en voelt zich sociaal voldoende gesteund.',
-  7:  '{GN} is niet sterk gemotiveerd om zich aan het dieet te houden. Wel weet de cliënt goed wat het dieet inhoudt. Gezien de matige motivatie zijn de hoge scores op respons-effectiviteit, op eigen-effectiviteit en op sociale steun opvallend: {g} is er van overtuigd dat het volgen van het dieet zinvol is, verwacht weinig moeite met het volgen van het dieet en voelt zich sociaal voldoende gesteund.',
-  8:  '{GN} is niet sterk gemotiveerd om zich aan het dieet te houden. Ook weet de cliënt niet precies wat het dieet inhoudt. Gezien de matige motivatie zijn de hoge scores op respons-effectiviteit, op eigen-effectiviteit en op sociale steun opvallend: {g} is er van overtuigd dat het volgen van het dieet zinvol is, verwacht weinig moeite met het volgen van het dieet en voelt zich sociaal voldoende gesteund.',
-  9:  '{GN} is zeer gemotiveerd om zich aan het dieet te houden en heeft ook het gevoel goed te weten wat het dieet inhoudt. Toch heeft {g} {DIAG3}',
-  10: '{GN} is zeer gemotiveerd om zich aan het dieet te houden. Toch weet de cliënt niet precies wat het dieet inhoudt. Toch heeft {g} {DIAG3}',
-  11: '{GN} is zeer gemotiveerd om zich aan het dieet te houden en heeft ook het gevoel goed te weten wat het dieet inhoudt. Consistent met dit beeld zijn de hoge scores op respons-effectiviteit, op eigen-effectiviteit en op sociale steun: {g} is er van overtuigd dat het volgen van het dieet zinvol is, verwacht weinig moeite met het volgen van het dieet en voelt zich sociaal voldoende gesteund.',
-  12: '{GN} is zeer gemotiveerd om zich aan het dieet te houden. Toch weet de cliënt niet precies wat het dieet inhoudt. Wel heeft {g} hoge scores op respons-effectiviteit, op eigen-effectiviteit en op sociale steun: {g} is er van overtuigd dat het volgen van het dieet zinvol is, verwacht weinig moeite met het volgen van het dieet en voelt zich sociaal voldoende gesteund.'
-};
-
-// Bar labels and tooltips
-const BAR_CONFIG = [
-  {
-    key: 'gedrag',
-    label: 'Dieetgedrag',
-    tooltips: {
-      H: 'Dieet is goed gevolgd',
-      M: 'Dieet kan beter worden gevolgd',
-      L: 'Dieet is onvoldoende gevolgd',
-      null: 'Nog niet gestart met dieet'
-    }
-  },
-  {
-    key: 'mot',
-    label: 'Motivatie',
-    tooltips: {
-      H: 'Motivatie is goed',
-      M: 'Motivatie kan verbeterd worden',
-      L: 'Motivatie is laag'
-    }
-  },
-  {
-    key: 'pros',
-    label: 'Respons-effectiviteit',
-    tooltips: {
-      H: 'Vindt het dieet zinvol',
-      M: 'Vindt het dieet niet heel erg zinvol',
-      L: 'Vindt dat het dieet weinig zin heeft'
-    }
-  },
-  {
-    key: 'self',
-    label: 'Eigen-effectiviteit',
-    tooltips: {
-      H: 'Ervaart voldoende controle',
-      M: 'Kan meer controle ervaren',
-      L: 'Ervaart weinig controle'
-    }
-  },
-  {
-    key: 'soc',
-    label: 'Sociale steun',
-    tooltips: {
-      H: 'Ervaart voldoende sociale steun',
-      M: 'Kan meer sociale steun gebruiken',
-      L: 'Ervaart weinig sociale steun'
-    }
-  }
-];
-// js/assembler.js
-// Assembles the full diagnostic text from scores and answers
-
-function getGenderTokens(geslacht, naam) {
-  const isMan = geslacht === 'man';
-  return {
-    GN:  (isMan ? 'De heer ' : 'Mevrouw ') + naam,  // sentence-start: "De heer X"
-    g:   isMan ? 'hij' : 'zij',                       // mid-sentence pronoun
-    gn:  (isMan ? 'de heer ' : 'mevrouw ') + naam    // lowercase version (not currently used)
-  };
-}
-
-function fillTokens(text, tokens, barriere) {
-  return text
-    .replace(/\{GN\}/g, tokens.GN)
-    .replace(/\{g\}/g,  tokens.g)
-    .replace(/\{gn\}/g, tokens.gn)
-    .replace(/\{BARRIERE\}/g, barriere || 'diverse redenen');
-}
-
-function formatBarriere(selectedValues) {
-  if (!selectedValues || selectedValues.length === 0) return 'diverse redenen';
-  if (selectedValues.length === 1) return selectedValues[0];
-  const last = selectedValues[selectedValues.length - 1];
-  const rest = selectedValues.slice(0, -1);
-  return rest.join(', ') + ' en ' + last;
-}
-
-function getDiag3Number(pros, self, soc) {
-  // Map the combination of pros/self/soc (each H/M/L) to DIAG3 number
-  const p = pros, s = self, o = soc;
-
-  if (p === 'L' && s === 'H' && o === 'H') return 1;
-  if (p === 'M' && s === 'H' && o === 'H') return 2;
-  if (p === 'H' && s === 'L' && o === 'H') return 3;
-  if (p === 'H' && s === 'M' && o === 'H') return 4;
-  if (p === 'H' && s === 'H' && o === 'L') return 5;
-  if (p === 'H' && s === 'H' && o === 'M') return 6;
-  if (p === 'L' && s === 'L' && o === 'H') return 7;
-  if (p === 'M' && s === 'L' && o === 'H') return 8;
-  if (p === 'L' && s === 'M' && o === 'H') return 9;
-  if (p === 'M' && s === 'M' && o === 'H') return 10;
-  if (p === 'L' && s === 'H' && o === 'L') return 11;
-  if (p === 'L' && s === 'H' && o === 'M') return 12;
-  if (p === 'M' && s === 'H' && o === 'L') return 13;
-  if (p === 'M' && s === 'H' && o === 'M') return 14;
-  if (p === 'H' && s === 'L' && o === 'L') return 15;
-  if (p === 'H' && s === 'M' && o === 'L') return 16;
-  if (p === 'H' && s === 'L' && o === 'M') return 17;
-  if (p === 'H' && s === 'M' && o === 'M') return 18;
-  if (p === 'L' && s === 'L' && o === 'L') return 19;
-  if (p === 'M' && s === 'L' && o === 'L') return 20;
-  if (p === 'M' && s === 'M' && o === 'L') return 21;
-  if (p === 'M' && s === 'M' && o === 'M') return 22;
-  if (p === 'L' && s === 'M' && o === 'L') return 23;
-  if (p === 'L' && s === 'L' && o === 'M') return 24;
-  if (p === 'M' && s === 'L' && o === 'M') return 25;
-  if (p === 'L' && s === 'M' && o === 'M') return 26;
-
-  return null; // all H — no DIAG3 needed
-}
-
-function hasLowOrMid(pros, self, soc) {
-  return pros !== 'H' || self !== 'H' || soc !== 'H';
-}
-
-function assembleDiagText(answers, scores, geslacht, naam) {
-  const { gedrag, mot, pros, self, soc } = scores;
-  const tokens = getGenderTokens(geslacht, naam);
-  const barriere = formatBarriere(answers.V2);
-
-  let parts = [];
-
-  // ── PATH A: V0 = 1 (started diet) ───────────────────────
-  if (answers.V0 === 1) {
-
-    // DIAG1: determine which DIAG1 block
-    let diag1Num = null;
-    if      (gedrag === 'L' && mot === 'L') diag1Num = 1;
-    else if (gedrag === 'L' && mot === 'M') diag1Num = 2;
-    else if (gedrag === 'L' && mot === 'H') diag1Num = 3;
-    else if (gedrag === 'M' && mot === 'L') diag1Num = 4;
-    else if (gedrag === 'M' && mot === 'M') diag1Num = 5;
-    else if (gedrag === 'M' && mot === 'H') diag1Num = 6;
-    else if (gedrag === 'H' && mot === 'L') diag1Num = 7;
-    else if (gedrag === 'H' && mot === 'M') diag1Num = 8;
-    else if (gedrag === 'H' && mot === 'H') diag1Num = 9;
-
-    if (diag1Num) {
-      parts.push(fillTokens(DIAG1_TEXTS[diag1Num], tokens, barriere));
-    }
-
-    // DIAG2: follow-up block
-    let diag2Text = '';
-    const allHigh = pros === 'H' && self === 'H' && soc === 'H';
-
-    if (gedrag === 'H' && mot === 'H') {
-      if (allHigh) {
-        // DIAG2=1
-        diag2Text = fillTokens(DIAG2_TEXTS[1], tokens);
-      } else {
-        // DIAG2=2 → needs DIAG3
-        const diag3Num = getDiag3Number(pros, self, soc);
-        const diag3Text = diag3Num ? fillTokens(DIAG3_TEXTS[diag3Num], tokens) : '';
-        diag2Text = fillTokens(DIAG2_TEXTS[2], tokens).replace('{DIAG3}', diag3Text);
-      }
-    } else {
-      if (allHigh) {
-        // DIAG2=3
-        diag2Text = fillTokens(DIAG2_TEXTS[3], tokens);
-      } else {
-        // DIAG2=4 → needs DIAG3
-        const diag3Num = getDiag3Number(pros, self, soc);
-        const diag3Text = diag3Num ? fillTokens(DIAG3_TEXTS[diag3Num], tokens) : '';
-        diag2Text = fillTokens(DIAG2_TEXTS[4], tokens).replace('{DIAG3}', diag3Text);
-      }
-    }
-
-    if (diag2Text) parts.push(diag2Text);
-
-  // ── PATH B: V0 = 2 (not yet started) ───────────────────
-  } else {
-    const v3 = answers.V3;
-    const allHigh = pros === 'H' && self === 'H' && soc === 'H';
-
-    let diag4Num = null;
-
-    if      (mot === 'L' && v3 > 2  && !allHigh) diag4Num = 1;
-    else if (mot === 'L' && v3 <= 2 && !allHigh) diag4Num = 2;
-    else if (mot === 'M' && v3 > 2  && !allHigh) diag4Num = 3;
-    else if (mot === 'M' && v3 <= 2 && !allHigh) diag4Num = 4;
-    else if (mot === 'L' && v3 > 2  && allHigh)  diag4Num = 5;
-    else if (mot === 'L' && v3 <= 2 && allHigh)  diag4Num = 6;
-    else if (mot === 'M' && v3 > 2  && allHigh)  diag4Num = 7;
-    else if (mot === 'M' && v3 <= 2 && allHigh)  diag4Num = 8;
-    else if (mot === 'H' && v3 > 2  && !allHigh) diag4Num = 9;
-    else if (mot === 'H' && v3 <= 2 && !allHigh) diag4Num = 10;
-    else if (mot === 'H' && v3 > 2  && allHigh)  diag4Num = 11;
-    else if (mot === 'H' && v3 <= 2 && allHigh)  diag4Num = 12;
-
-    if (diag4Num) {
-      let diag4Text = DIAG4_TEXTS[diag4Num];
-
-      // Some DIAG4 blocks embed DIAG3
-      if (diag4Text.includes('{DIAG3}')) {
-        const diag3Num = getDiag3Number(pros, self, soc);
-        const diag3Text = diag3Num ? fillTokens(DIAG3_TEXTS[diag3Num], tokens) : 'diverse beperkende factoren.';
-        diag4Text = diag4Text.replace('{DIAG3}', diag3Text);
-      }
-
-      parts.push(fillTokens(diag4Text, tokens, barriere));
-    }
-  }
-
-  return parts.join('\n\n');
-}
-// js/renderer.js
-// Renders the results screen: bars + diagnostic text
-
-function colorClass(level) {
-  if (level === 'H') return 'green';
-  if (level === 'M') return 'orange';
-  if (level === 'L') return 'red';
-  return 'grey';
-}
-
-function renderBars(scores, pct, answeredV0) {
-  const container = document.getElementById('bars-container');
-  container.innerHTML = '';
-
-  BAR_CONFIG.forEach(cfg => {
-    const level   = scores[cfg.key];
-    const pctVal  = pct[cfg.key];
-    const cls     = colorClass(level);
-    const tooltip = level ? cfg.tooltips[level] : (cfg.tooltips['null'] || '—');
-
-    // Hide gedrag bar if V0 = 2 (not started)
-    if (cfg.key === 'gedrag' && answeredV0 === 2) {
-      return;
-    }
-
-    const item = document.createElement('div');
-    item.className = 'bar-item-wrap';
-    item.innerHTML = `
-      <div class="bar-item">
-        <div class="bar-label">${cfg.label}</div>
-        <div class="bar-track">
-          <div class="bar-fill ${cls}" data-pct="${pctVal}"></div>
-        </div>
-        <div class="bar-badge ${cls}">${level === 'H' ? 'Hoog' : level === 'M' ? 'Matig' : level === 'L' ? 'Laag' : '—'}</div>
-      </div>
-      <div class="bar-tooltip-text">${tooltip}</div>
-    `;
-    container.appendChild(item);
-  });
-
-  // Animate bars after a short delay
-  setTimeout(() => {
-    document.querySelectorAll('.bar-fill').forEach(el => {
-      el.style.width = el.dataset.pct + '%';
-    });
-  }, 100);
-}
-
-function renderDiagText(text) {
-  const el = document.getElementById('diag-text');
-  el.textContent = text;
-}
-
-function renderSubtitle(naam, geslacht) {
-  const el = document.getElementById('results-subtitle');
-  const title = geslacht === 'man' ? 'De heer' : 'Mevrouw';
-  el.textContent = `Diagnose voor ${title} ${naam}`;
-}
-
-function renderResults(answers, scoreData, geslacht, naam) {
-  const { scores, pct } = scoreData;
-  const diagText = assembleDiagText(answers, scores, geslacht, naam);
-
-  renderSubtitle(naam, geslacht);
-  renderBars(scores, pct, answers.V0);
-  renderDiagText(diagText);
-
-  // Also populate PDF layout
-  preparePdfLayout(answers, scores, pct, diagText, naam, geslacht);
-}
-// js/pdf.js
-// Prepares and triggers PDF download
-
-function preparePdfLayout(answers, scores, pct, diagText, naam, geslacht) {
-  const title = geslacht === 'man' ? 'De heer' : 'Mevrouw';
-
-  document.getElementById('pdf-naam').textContent = `${title} ${naam}`;
-  document.getElementById('pdf-datum').textContent = new Date().toLocaleDateString('nl-NL', {
-    day: 'numeric', month: 'long', year: 'numeric'
-  });
-  document.getElementById('pdf-year').textContent = new Date().getFullYear();
-
-  // Build PDF bars
-  const pdfBars = document.getElementById('pdf-bars');
-  pdfBars.innerHTML = '';
-
-  BAR_CONFIG.forEach(cfg => {
-    if (cfg.key === 'gedrag' && answers.V0 === 2) return;
-
-    const level   = scores[cfg.key];
-    const tooltip = level ? cfg.tooltips[level] : (cfg.tooltips['null'] || '—');
-    const dotColor = level === 'H' ? '#2e7d52' : level === 'M' ? '#c46a00' : level === 'L' ? '#b0292a' : '#ccc';
-
-    const row = document.createElement('div');
-    row.className = 'pdf-bar-item';
-    row.innerHTML = `
-      <div class="pdf-bar-label">${cfg.label}</div>
-      <div class="pdf-bar-dot" style="background:${dotColor}"></div>
-      <div class="pdf-bar-tooltip">${tooltip}</div>
-    `;
-    pdfBars.appendChild(row);
-  });
-
-  // PDF diagnostic text
-  const pdfText = document.getElementById('pdf-text');
-  pdfText.className = 'pdf-diag-text';
-  pdfText.textContent = diagText;
-}
-
-function downloadPdf(naam) {
-  const layout = document.getElementById('pdf-layout');
-  layout.style.display = 'block';
-  layout.style.position = 'fixed';
-  layout.style.left = '-9999px';
-
-  const filename = `Vodimind_Diagnose_${naam.replace(/\s+/g, '_')}.pdf`;
-
-  const opt = {
-    margin:       [15, 15, 15, 15],
-    filename:     filename,
-    image:        { type: 'jpeg', quality: 0.97 },
-    html2canvas:  { scale: 2, useCORS: true },
-    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-  };
-
-  html2pdf().set(opt).from(layout).save().then(() => {
-    layout.style.display = 'none';
-  });
-}
-// js/app.js — Main application controller
-
-// ── GLOBAL STATE ─────────────────────────────────────────────
-var APP = {
-  userName:        '',
-  userGeslacht:    '',
-  answers:         {},
-  activeQuestions: [],
-  currentIndex:    0
-};
-
-// ── GENDER SELECTION (called via onclick in HTML) ─────────────
-function selectGender(value) {
-  APP.userGeslacht = value;
-  document.getElementById('btn-man').classList.toggle('selected',   value === 'man');
-  document.getElementById('btn-vrouw').classList.toggle('selected', value === 'vrouw');
-  checkIntroReady();
-}
-
-function goPrev() { if (APP.currentIndex > 0) { APP.currentIndex--; renderQuestion(); } }
-function goNext() { if (APP.currentIndex < APP.activeQuestions.length - 1) { APP.currentIndex++; renderQuestion(); } else { finishAssessment(); } }
-function triggerPdf() { downloadPdf(APP.userName); }
 
 function startAssessment() {
-  var naam = document.getElementById("input-naam").value.trim();
-  if (!naam || !APP.userGeslacht) { document.getElementById("intro-error").classList.remove("hidden"); return; }
-  document.getElementById("intro-error").classList.add("hidden");
-  APP.userName = naam; APP.answers = {}; APP.currentIndex = 0;
-  buildActiveQuestions(); showScreen("screen-questions"); renderQuestion();
+  APP.naam    = document.getElementById('input-naam').value.trim();
+  APP.answers = {};
+  APP.idx     = 0;
+  APP.questions = buildQuestions();
+  showScreen('screen-questions');
+  showQuestion();
 }
 
-function checkIntroReady() {
-  var naam = document.getElementById('input-naam').value.trim();
-  document.getElementById('btn-start').disabled = !(naam && APP.userGeslacht);
-}
-
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
-  document.getElementById(id).classList.add('active');
-  window.scrollTo(0, 0);
-}
-
-function buildActiveQuestions() {
-  APP.activeQuestions = QUESTIONS.filter(function(q) {
-    if (typeof q.skipIf === 'function') return !q.skipIf(APP.answers);
+// ═══════════════════════════════════════════════════════
+// QUESTIONS DATA
+// ═══════════════════════════════════════════════════════
+function buildQuestions() {
+  var all = getAllQuestions();
+  return all.filter(function(q) {
+    if (q.id === 'V1' || q.id === 'V2') return APP.answers.V0 === 1;
     return true;
   });
 }
 
-function renderQuestion() {
-  var q     = APP.activeQuestions[APP.currentIndex];
-  var total = APP.activeQuestions.length;
+function getAllQuestions() {
+  return [
+    { id:'V0', text:'Bent u al met uw dieet begonnen?', type:'radio', options:[
+      {label:'Ja', score:1}, {label:'Nee', score:2}
+    ]},
+    { id:'V1', text:'Hoe ging het bij u de afgelopen twee weken?',
+      sub:'Het is belangrijk dat de dieetadviezen goed opgevolgd worden, maar soms valt dat niet mee.',
+      type:'radio', options:[
+      {label:'Ik heb me precies aan het dieet gehouden', score:4},
+      {label:'Ik heb me grotendeels aan het dieet gehouden', score:3},
+      {label:'Ik heb me maar voor een deel aan het dieet gehouden', score:2},
+      {label:'Ik heb me nauwelijks aan het dieet gehouden', score:1},
+      {label:'Ik heb me helemaal niet aan het dieet gehouden', score:0}
+    ]},
+    { id:'V2', text:'Als u zich niet helemaal aan het dieet kon houden, hoe kwam dat?',
+      sub:'U kunt meer dan één reden aanvinken.', type:'checkbox', optional:true, options:[
+      {label:'Ik had weinig tijd', value:'weinig tijd'},
+      {label:'Ik ben het vergeten', value:'vergeten'},
+      {label:'Ik had niet voldoende geld', value:'onvoldoende geld'},
+      {label:'Ik was niet erg gemotiveerd', value:'weinig motivatie'},
+      {label:'Ik had geen klachten meer', value:'geen klachten meer'},
+      {label:'Ik had andere dingen aan mijn hoofd', value:'andere dingen aan het hoofd'},
+      {label:'Ik wist niet goed hoe het moest', value:'onduidelijkheid over het dieet'}
+    ]},
+    { id:'V3', text:'Ik weet wat het dieet inhoudt.', type:'radio', options:[
+      {label:'Ik weet precies wat het dieet inhoudt', score:4},
+      {label:'Ik weet wat het dieet inhoudt', score:3},
+      {label:'Ik weet een beetje wat het dieet inhoudt', score:2},
+      {label:'Ik weet niet precies wat het dieet inhoudt', score:1},
+      {label:'Ik weet niet wat het dieet inhoudt', score:0}
+    ]},
+    { id:'V4', text:'Ik ben van plan om het dieet in de komende tijd precies te volgen.', type:'radio', options:[
+      {label:'Dat ben ik heel sterk van plan', score:4},
+      {label:'Dat ben ik van plan', score:3},
+      {label:'Dat ben ik een beetje van plan', score:2},
+      {label:'Dat ben ik niet echt van plan', score:1},
+      {label:'Dat ben ik echt niet van plan', score:0}
+    ]},
+    { id:'V5', text:'Ik ben gemotiveerd om het dieet te volgen.', type:'radio', options:[
+      {label:'Ik ben heel erg gemotiveerd', score:4},
+      {label:'Ik ben gemotiveerd', score:3},
+      {label:'Ik ben een beetje gemotiveerd', score:2},
+      {label:'Ik ben niet erg gemotiveerd', score:1},
+      {label:'Ik ben helemaal niet gemotiveerd', score:0}
+    ]},
+    { id:'V6', text:'Het heeft zin voor mij om het dieet te volgen.', type:'radio', options:[
+      {label:'Ja, dat heeft veel zin voor mij', score:3},
+      {label:'Ja, dat heeft zin voor mij', score:2},
+      {label:'Ja, dat heeft een beetje zin voor mij', score:1},
+      {label:'Nee, dat heeft geen zin voor mij', score:0}
+    ]},
+    { id:'V7', text:'Ik krijg minder klachten als ik het dieet volg.', type:'radio', options:[
+      {label:'Ja, dan krijg ik veel minder klachten', score:3},
+      {label:'Ja, dan krijg ik minder klachten', score:2},
+      {label:'Ja, dan krijg ik wel wat minder klachten', score:1},
+      {label:'Nee, ik krijg niet minder klachten', score:0}
+    ]},
+    { id:'V8', text:'Het is beter voor mijn gezondheid om het dieet te volgen.', type:'radio', options:[
+      {label:'Ja, dat is veel beter voor mijn gezondheid', score:3},
+      {label:'Ja, dat is beter voor mijn gezondheid', score:2},
+      {label:'Ja, dat is een beetje beter voor mijn gezondheid', score:1},
+      {label:'Nee, dat is niet beter voor mijn gezondheid', score:0}
+    ]},
+    { id:'V9', text:'Het dieet volgen heeft voordelen.', type:'radio', options:[
+      {label:'Ja, het dieet volgen heeft veel voordelen', score:3},
+      {label:'Ja, het dieet volgen heeft voordelen', score:2},
+      {label:'Ja, het dieet volgen heeft wel wat voordelen', score:1},
+      {label:'Nee, het dieet volgen heeft geen voordelen', score:0}
+    ]},
+    { id:'V10', text:'Ik voel me beter als ik het dieet volg.', type:'radio', options:[
+      {label:'Ja, dan voel ik me veel beter', score:3},
+      {label:'Ja, dan voel ik me beter', score:2},
+      {label:'Ja, dan voel ik me een beetje beter', score:1},
+      {label:'Nee, dan voel ik me niet beter', score:0}
+    ]},
+    { id:'V11', text:'Ik voel me lichamelijk sterker als ik het dieet volg.', type:'radio', options:[
+      {label:'Ja, dan voel ik me veel sterker', score:3},
+      {label:'Ja, dan voel ik me sterker', score:2},
+      {label:'Ja, dan voel ik me een beetje sterker', score:1},
+      {label:'Nee, dan voel ik me niet sterker', score:0}
+    ]},
+    { id:'V12', text:'Het lukt me om de komende tijd het dieet precies te volgen.', type:'radio', options:[
+      {label:'Dat lukt me zeker wel', score:3},
+      {label:'Dat lukt me waarschijnlijk wel', score:2},
+      {label:'Dat lukt me waarschijnlijk niet', score:1},
+      {label:'Dat lukt me zeker niet', score:0}
+    ]},
+    { id:'V13', text:'Ik kijk er tegen op om de komende tijd het dieet precies te volgen.', type:'radio', options:[
+      {label:'Daar kijk ik heel erg tegenop', score:0},
+      {label:'Daar kijk ik tegenop', score:1},
+      {label:'Daar kijk ik een beetje tegenop', score:2},
+      {label:'Daar kijk ik helemaal niet tegenop', score:3}
+    ]},
+    { id:'V14', text:'Het is moeilijk om het dieet precies te volgen.', type:'radio', options:[
+      {label:'Dat is erg moeilijk', score:0},
+      {label:'Dat is moeilijk', score:1},
+      {label:'Dat is niet erg moeilijk', score:2},
+      {label:'Dat is gemakkelijk', score:3}
+    ]},
+    { id:'V15', text:'Ik zal het dieet in de komende tijd precies volgen.', type:'radio', options:[
+      {label:'Ik zal het dieet precies volgen', score:4},
+      {label:'Ik zal het dieet grotendeels volgen', score:3},
+      {label:'Ik zal het dieet maar gedeeltelijk volgen', score:2},
+      {label:'Ik zal het dieet een klein beetje volgen', score:1},
+      {label:'Ik zal het dieet niet volgen', score:0}
+    ]},
+    { id:'V16', text:'Het dieet volgen heeft nadelen.', type:'radio', options:[
+      {label:'Ja, het dieet volgen heeft veel nadelen', score:3},
+      {label:'Ja, het dieet volgen heeft nadelen', score:2},
+      {label:'Ja, het dieet volgen heeft wel wat nadelen', score:1},
+      {label:'Nee, het dieet volgen heeft geen nadelen', score:0}
+    ]},
+    { id:'V17', text:'De mensen in mijn omgeving vinden het belangrijk dat ik het dieet volg.', type:'radio', options:[
+      {label:'Dat vinden ze heel belangrijk', score:3},
+      {label:'Dat vinden ze belangrijk', score:2},
+      {label:'Dat vinden ze maar een beetje belangrijk', score:1},
+      {label:'Dat vinden ze onbelangrijk', score:0}
+    ]},
+    { id:'V18', text:'Ik heb het gevoel dat ik wat betreft mijn dieet er alleen voor sta.', type:'radio', options:[
+      {label:'Ja, ik sta er helemaal alleen voor', score:0},
+      {label:'Ja, ik sta er grotendeels alleen voor', score:1},
+      {label:'Ja, ik sta er gedeeltelijk alleen voor', score:2},
+      {label:'Nee, ik sta er niet alleen voor', score:3}
+    ]},
+    { id:'V19', text:'De mensen in mijn omgeving helpen me om mijn dieet te volgen.', sub:'Of hoe denkt u dat het zal zijn?', type:'radio', options:[
+      {label:'Ze helpen me heel goed', score:3},
+      {label:'Ze helpen me', score:2},
+      {label:'Ze helpen me een beetje', score:1},
+      {label:'Ze helpen me niet', score:0}
+    ]},
+    { id:'V20', text:'De mensen in mijn omgeving steunen mij om mijn dieet te volgen.', sub:'Of hoe denkt u dat het zal zijn?', type:'radio', options:[
+      {label:'Ze steunen me heel goed', score:3},
+      {label:'Ze steunen me', score:2},
+      {label:'Ze steunen me een beetje', score:1},
+      {label:'Ze steunen me niet', score:0}
+    ]},
+    { id:'V21', text:'Er zijn mensen met wie ik gemakkelijk over mijn dieet kan praten.', type:'radio', options:[
+      {label:'Ja, met meerdere mensen kan ik gemakkelijk over mijn dieet praten', score:2},
+      {label:'Ja, met één persoon kan ik gemakkelijk over mijn dieet praten', score:1},
+      {label:'Nee, er is niemand met wie ik gemakkelijk over mijn dieet kan praten', score:0}
+    ]}
+  ];
+}
 
-  var pct = Math.round(((APP.currentIndex + 1) / total) * 100);
-  document.getElementById('progress-fill').style.width  = pct + '%';
-  document.getElementById('progress-label').textContent = 'Vraag ' + (APP.currentIndex + 1) + ' van ' + total;
+// ═══════════════════════════════════════════════════════
+// QUESTION RENDERING
+// ═══════════════════════════════════════════════════════
+function showQuestion() {
+  var q     = APP.questions[APP.idx];
+  var total = APP.questions.length;
 
-  var btnPrev = document.getElementById('btn-prev');
-  var btnNext = document.getElementById('btn-next');
-  btnPrev.style.visibility = APP.currentIndex === 0 ? 'hidden' : 'visible';
-  btnNext.textContent = APP.currentIndex === total - 1 ? 'Bekijk resultaten →' : 'Volgende →';
+  document.getElementById('progress-fill').style.width = Math.round((APP.idx+1)/total*100)+'%';
+  document.getElementById('progress-label').textContent = 'Vraag '+(APP.idx+1)+' van '+total;
+  document.getElementById('btn-prev').style.visibility = APP.idx===0 ? 'hidden' : 'visible';
+  document.getElementById('btn-next').textContent = APP.idx===total-1 ? 'Bekijk resultaten →' : 'Volgende →';
 
-  var currentAnswer = APP.answers[q.id];
-  var hasAnswer = q.type === 'checkbox'
-    ? (q.optional || (currentAnswer && currentAnswer.length > 0))
-    : (currentAnswer !== undefined && currentAnswer !== null);
-  btnNext.disabled = !hasAnswer;
+  var ans = APP.answers[q.id];
+  var hasAns = q.type==='checkbox' ? (q.optional || (ans && ans.length>0)) : (ans !== undefined && ans !== null);
+  document.getElementById('btn-next').disabled = !hasAns;
 
-  var html = '<div class="question-number">Vraag ' + (APP.currentIndex + 1) + '</div>';
-  html += '<div class="question-text">' + q.text + '</div>';
-  if (q.sub) html += '<div class="question-sub">' + q.sub + '</div>';
+  var h = '<div class="question-number">Vraag '+(APP.idx+1)+'</div>';
+  h += '<div class="question-text">'+q.text+'</div>';
+  if (q.sub) h += '<div class="question-sub">'+q.sub+'</div>';
+  h += '<div class="options-list">';
 
   if (q.type === 'radio') {
-    html += '<div class="options-list">';
-    q.options.forEach(function(opt) {
-      var sel = (currentAnswer === opt.score) ? 'selected' : '';
-      html += '<div class="option-item ' + sel + '" data-score="' + opt.score + '" onclick="selectOption(this)">';
-      html += '<div class="option-radio">' + (sel ? '●' : '○') + '</div>';
-      html += '<span class="option-label">' + opt.label + '</span>';
-      html += '</div>';
+    q.options.forEach(function(opt, i) {
+      var sel = (ans === opt.score) ? ' selected' : '';
+      h += '<div class="option-item'+sel+'" onclick="pickOption('+i+')">';
+      h += '<div class="option-dot"></div>';
+      h += '<span class="option-label">'+opt.label+'</span></div>';
     });
-    html += '</div>';
-  } else if (q.type === 'checkbox') {
-    var selected = currentAnswer || [];
-    html += '<div class="checkbox-note">U kunt meer dan één reden aanvinken.</div>';
-    html += '<div class="options-list">';
-    q.options.forEach(function(opt) {
-      var sel = selected.indexOf(opt.value) !== -1 ? 'selected' : '';
-      html += '<div class="option-item ' + sel + '" data-value="' + opt.value + '" onclick="toggleCheckbox(this)">';
-      html += '<div class="option-radio">' + (sel ? '☑' : '☐') + '</div>';
-      html += '<span class="option-label">' + opt.label + '</span>';
-      html += '</div>';
-    });
-    html += '</div>';
-  }
-
-  var card = document.getElementById('question-card');
-  card.innerHTML = html;
-  card.style.animation = 'none';
-  void card.offsetHeight;
-  card.style.animation = 'fadeUp 0.3s ease both';
-}
-
-function selectOption(el) {
-  var q     = APP.activeQuestions[APP.currentIndex];
-  var score = parseInt(el.getAttribute('data-score'));
-  APP.answers[q.id] = score;
-  if (q.id === 'V0') buildActiveQuestions();
-
-  document.querySelectorAll('#question-card .option-item').forEach(function(item) {
-    item.classList.remove('selected');
-    item.querySelector('.option-radio').textContent = '○';
-  });
-  el.classList.add('selected');
-  el.querySelector('.option-radio').textContent = '●';
-  document.getElementById('btn-next').disabled = false;
-}
-
-function toggleCheckbox(el) {
-  var q   = APP.activeQuestions[APP.currentIndex];
-  var val = el.getAttribute('data-value');
-  if (!APP.answers[q.id]) APP.answers[q.id] = [];
-
-  var idx = APP.answers[q.id].indexOf(val);
-  if (idx === -1) {
-    APP.answers[q.id].push(val);
-    el.classList.add('selected');
-    el.querySelector('.option-radio').textContent = '☑';
   } else {
-    APP.answers[q.id].splice(idx, 1);
-    el.classList.remove('selected');
-    el.querySelector('.option-radio').textContent = '☐';
+    var selArr = ans || [];
+    q.options.forEach(function(opt, i) {
+      var sel = selArr.indexOf(opt.value) !== -1 ? ' selected' : '';
+      h += '<div class="option-item'+sel+'" onclick="pickCheck('+i+')">';
+      h += '<div class="option-check">'+(sel ? '✓' : '')+'</div>';
+      h += '<span class="option-label">'+opt.label+'</span></div>';
+    });
+    h += '</div><div class="checkbox-note">U kunt meer dan één reden aanvinken.</div>';
   }
-  document.getElementById('btn-next').disabled = false;
+
+  if (q.type === 'radio') h += '</div>';
+  document.getElementById('question-card').innerHTML = h;
 }
 
-function finishAssessment() {
-  var scoreData = calculateScores(APP.answers);
-  showScreen('screen-results');
-  renderResults(APP.answers, scoreData, APP.userGeslacht, APP.userName);
+function pickOption(i) {
+  var q = APP.questions[APP.idx];
+  APP.answers[q.id] = q.options[i].score;
+  if (q.id === 'V0') {
+    APP.questions = buildQuestions();
+    // stay on same question after rebuild
+    while (APP.idx < APP.questions.length && APP.questions[APP.idx].id !== 'V0') APP.idx = 0;
+  }
+  showQuestion();
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('input-naam').addEventListener('input', checkIntroReady);
+function pickCheck(i) {
+  var q = APP.questions[APP.idx];
+  if (!APP.answers[q.id]) APP.answers[q.id] = [];
+  var val = q.options[i].value;
+  var idx = APP.answers[q.id].indexOf(val);
+  if (idx === -1) APP.answers[q.id].push(val);
+  else APP.answers[q.id].splice(idx, 1);
+  showQuestion();
+}
 
-  document.getElementById('btn-start').addEventListener('click', function() {
-    var naam = document.getElementById('input-naam').value.trim();
-    if (!naam || !APP.userGeslacht) {
-      document.getElementById('intro-error').classList.remove('hidden');
-      return;
+function goPrev() { if (APP.idx > 0) { APP.idx--; showQuestion(); } }
+function goNext() {
+  if (APP.idx < APP.questions.length-1) { APP.idx++; showQuestion(); }
+  else showResults();
+}
+
+// ═══════════════════════════════════════════════════════
+// SCORING
+// ═══════════════════════════════════════════════════════
+function avg(arr) {
+  var vals = arr.filter(function(v){ return v !== undefined && v !== null; });
+  if (!vals.length) return null;
+  return vals.reduce(function(a,b){return a+b;},0) / vals.length;
+}
+function classify(v, x, y) {
+  if (v === null) return null;
+  if (v > x) return 'H';
+  if (v > y) return 'M';
+  return 'L';
+}
+function calcScores() {
+  var a = APP.answers;
+  var gedraRaw   = (a.V0===1 && a.V1 !== undefined) ? a.V1 : null;
+  var intentie   = avg([a.V4, a.V5, a.V15]);
+  var pro        = avg([a.V6, a.V7, a.V8, a.V9, a.V10, a.V11]);
+  var selfef     = avg([a.V12, a.V13, a.V14]);
+  var socst      = avg([a.V17, a.V18, a.V19, a.V20, a.V21]);
+  return {
+    gedrag: classify(gedraRaw, 2, 1),
+    mot:    classify(intentie,  2, 1),
+    pros:   classify(pro,    1.75, 0.75),
+    self:   classify(selfef, 1.75, 0.75),
+    soc:    classify(socst,  1.75, 0.75),
+    pct: {
+      gedrag: gedraRaw===null ? 0 : Math.round(gedraRaw/4*100),
+      mot:    intentie===null ? 0 : Math.round(intentie/4*100),
+      pros:   pro===null      ? 0 : Math.round(pro/3*100),
+      self:   selfef===null   ? 0 : Math.round(selfef/3*100),
+      soc:    socst===null    ? 0 : Math.round(socst/3*100)
     }
-    document.getElementById('intro-error').classList.add('hidden');
-    APP.userName = naam;
-    APP.answers  = {};
-    APP.currentIndex = 0;
-    buildActiveQuestions();
-    showScreen('screen-questions');
-    renderQuestion();
-  });
+  };
+}
 
-  document.getElementById('btn-prev').addEventListener('click', function() {
-    if (APP.currentIndex > 0) { APP.currentIndex--; renderQuestion(); }
-  });
+// ═══════════════════════════════════════════════════════
+// TEXT ASSEMBLY
+// ═══════════════════════════════════════════════════════
+var T1 = {
+  1:'{GN} heeft zich niet aan het dieet gehouden. De cliënt geeft zelf aan dat dat vooral te maken heeft met {B}. Ook heeft de cliënt een lage motivatie om zich aan het dieet te houden.',
+  2:'{GN} heeft zich niet aan het dieet gehouden. De cliënt geeft zelf aan dat dat vooral te maken heeft met {B}. Ook heeft de cliënt een lage motivatie om zich aan het dieet te houden.',
+  3:'{GN} heeft zich niet aan het dieet gehouden. De cliënt geeft zelf aan dat dat vooral te maken heeft met {B}. Dat lijkt reëel want de motivatie van de cliënt lijkt wel goed te zijn. Toch zijn er ook psychologische redenen aan te wijzen waarom de dieettrouw laag is.',
+  4:'{GN} heeft zich voor een deel aan het dieet gehouden. Dat het niet helemaal lukte heeft volgens de cliënt zelf vooral te maken met {B}. Ook heeft de cliënt een lage motivatie om zich aan het dieet te houden.',
+  5:'{GN} heeft zich voor een deel aan het dieet gehouden. Dat het niet helemaal lukte heeft volgens de cliënt zelf vooral te maken met {B}. Ook heeft de cliënt een lage motivatie om zich aan het dieet te houden.',
+  6:'{GN} heeft zich voor een deel aan het dieet gehouden. Dat het niet helemaal lukte heeft volgens de cliënt zelf vooral te maken met {B}. Dat lijkt reëel want de motivatie van de cliënt lijkt wel goed te zijn. Toch zijn er ook psychologische redenen aan te wijzen waarom de dieettrouw niet optimaal is.',
+  7:'{GN} heeft zich goed aan het dieet gehouden. De motivatie om dat te blijven doen is echter laag.',
+  8:'{GN} heeft zich goed aan het dieet gehouden. De motivatie om dat te blijven doen is echter niet erg sterk.',
+  9:'{GN} heeft zich goed aan het dieet gehouden. Ook de motivatie om dat te blijven doen is sterk.'
+};
+var T2 = {
+  1:'Verder heeft de cliënt een hoge score op respons-effectiviteit, op eigen-effectiviteit en op sociale steun: {g} is er van overtuigd dat het volgen van het dieet zinvol is, heeft weinig moeite met het volgen van het dieet en voelt zich sociaal voldoende gesteund. De psychologische toestand lijkt optimaal voor een goede dieettrouw.',
+  2:'Toch lijkt de toestand niet optimaal. De cliënt heeft ',
+  3:'De cliënt heeft echter een hoge score op respons-effectiviteit, op eigen-effectiviteit en op sociale steun: {g} is er van overtuigd dat het volgen van het dieet zinvol is, heeft weinig moeite met het volgen van het dieet en voelt zich sociaal voldoende gesteund.',
+  4:'Dat kan te maken hebben met '
+};
+var T3 = {
+  1:'een lage score op respons-effectiviteit: {g} is er niet van overtuigd dat het volgen van het dieet zinvol is.',
+  2:'een matige score op respons-effectiviteit: {g} is er niet echt van overtuigd dat het volgen van het dieet zinvol is.',
+  3:'een lage score op eigen-effectiviteit: {g} vindt het moeilijk om zich aan het dieet te houden.',
+  4:'een matige score op eigen-effectiviteit: {g} heeft moeite om zich aan het dieet te houden.',
+  5:'een lage score op sociale steun: {g} voelt zich niet gesteund door anderen.',
+  6:'een matige score op sociale steun: {g} voelt zich niet voldoende gesteund door anderen.',
+  7:'een lage score op respons-effectiviteit en op eigen-effectiviteit: {g} is er niet van overtuigd dat het volgen van het dieet zinvol is en vindt het ook moeilijk om zich aan het dieet te houden.',
+  8:'een matige score op respons-effectiviteit en een lage score op eigen-effectiviteit: {g} is er niet echt van overtuigd dat het volgen van het dieet zinvol is en vindt het ook moeilijk om zich aan het dieet te houden.',
+  9:'een lage score op respons-effectiviteit en een matige score op eigen-effectiviteit: {g} is er niet van overtuigd dat het volgen van het dieet zinvol is en heeft ook moeite om zich aan het dieet te houden.',
+  10:'een matige score op respons-effectiviteit en op eigen-effectiviteit: {g} is er niet echt van overtuigd dat het volgen van het dieet zinvol is en heeft ook moeite om zich aan het dieet te houden.',
+  11:'een lage score op respons-effectiviteit en op sociale steun: {g} is er niet van overtuigd dat het volgen van het dieet zinvol is en voelt zich niet gesteund door anderen.',
+  12:'een lage score op respons-effectiviteit en een matige score op sociale steun: {g} is er niet van overtuigd dat het volgen van het dieet zinvol is en voelt zich onvoldoende gesteund door anderen.',
+  13:'een matige score op respons-effectiviteit en een lage score op sociale steun: {g} is er niet echt van overtuigd dat het volgen van het dieet zinvol is en voelt zich niet gesteund door anderen.',
+  14:'een matige score op respons-effectiviteit en op sociale steun: {g} is er niet echt van overtuigd dat het volgen van het dieet zinvol is en voelt zich onvoldoende gesteund door anderen.',
+  15:'een lage score op eigen-effectiviteit en op sociale steun: {g} vindt het moeilijk om zich aan het dieet te houden en voelt zich niet gesteund door anderen.',
+  16:'een matige score op eigen-effectiviteit en een lage score op sociale steun: {g} heeft moeite om zich aan het dieet te houden en voelt zich niet gesteund door anderen.',
+  17:'een lage score op eigen-effectiviteit en een matige score op sociale steun: {g} vindt het moeilijk om zich aan het dieet te houden en voelt zich onvoldoende gesteund door anderen.',
+  18:'een matige score op eigen-effectiviteit en op sociale steun: {g} heeft moeite om zich aan het dieet te houden en voelt zich onvoldoende gesteund door anderen.',
+  19:'een lage score op respons-effectiviteit, op eigen-effectiviteit en op sociale steun: {g} is er niet van overtuigd dat het volgen van het dieet zinvol is, vindt het moeilijk om zich aan het dieet te houden en voelt zich niet gesteund door anderen.',
+  20:'een matige score op respons-effectiviteit en een lage score op eigen-effectiviteit en op sociale steun: {g} is er niet echt van overtuigd dat het volgen van het dieet zinvol is, vindt het moeilijk om zich aan het dieet te houden en voelt zich niet gesteund door anderen.',
+  21:'een matige score op respons-effectiviteit en op eigen-effectiviteit en een lage score op sociale steun: {g} is er niet echt van overtuigd dat het volgen van het dieet zinvol is, heeft moeite om zich aan het dieet te houden en voelt zich niet gesteund door anderen.',
+  22:'een matige score op respons-effectiviteit, op eigen-effectiviteit en op sociale steun: {g} is er niet echt van overtuigd dat het volgen van het dieet zinvol is, heeft moeite om zich aan het dieet te houden en voelt zich onvoldoende gesteund door anderen.',
+  23:'een lage score op respons-effectiviteit en sociale steun en een matige score op eigen-effectiviteit: {g} is er niet van overtuigd dat het volgen van het dieet zinvol is, voelt zich niet gesteund door anderen en heeft moeite om zich aan het dieet te houden.',
+  24:'een lage score op respons-effectiviteit en eigen-effectiviteit en een matige score op sociale steun: {g} is er niet van overtuigd dat het volgen van het dieet zinvol is, vindt het moeilijk om zich aan het dieet te houden en voelt zich onvoldoende gesteund door anderen.',
+  25:'een matige score op respons-effectiviteit en op sociale steun en een lage score op eigen-effectiviteit: {g} is er niet echt van overtuigd dat het volgen van het dieet zinvol is, voelt zich onvoldoende gesteund door anderen en vindt het moeilijk om zich aan het dieet te houden.',
+  26:'een lage score op respons-effectiviteit en een matige score op eigen-effectiviteit en op sociale steun: {g} is er niet van overtuigd dat het volgen van het dieet zinvol is, heeft moeite om zich aan het dieet te houden en voelt zich onvoldoende gesteund door anderen.'
+};
+var T4 = {
+  1:'{GN} is niet gemotiveerd om zich aan het dieet te houden. Wel heeft de cliënt het gevoel goed te weten wat het dieet inhoudt. De lage motivatie kan te maken hebben met ',
+  2:'{GN} is niet gemotiveerd om zich aan het dieet te houden. Ook weet de cliënt niet precies wat het dieet inhoudt. De lage motivatie kan te maken hebben met ',
+  3:'{GN} is niet sterk gemotiveerd om zich aan het dieet te houden. Wel heeft de cliënt het gevoel goed te weten wat het dieet inhoudt. De matige motivatie kan te maken hebben met ',
+  4:'{GN} is niet sterk gemotiveerd om zich aan het dieet te houden. Ook weet de cliënt niet precies wat het dieet inhoudt. De matige motivatie kan te maken hebben met ',
+  5:'{GN} is niet gemotiveerd om zich aan het dieet te houden. Wel weet de cliënt goed wat het dieet inhoudt. Inconsistent met de lage motivatie zijn de hoge scores op respons-effectiviteit, op eigen-effectiviteit en op sociale steun: {g} is er van overtuigd dat het volgen van het dieet zinvol is, heeft weinig moeite met het volgen van het dieet en voelt zich sociaal voldoende gesteund.',
+  6:'{GN} is niet gemotiveerd om zich aan het dieet te houden. Ook weet de cliënt niet precies wat het dieet inhoudt. Inconsistent met de lage motivatie zijn de hoge scores op respons-effectiviteit, op eigen-effectiviteit en op sociale steun: {g} is er van overtuigd dat het volgen van het dieet zinvol is, heeft weinig moeite met het volgen van het dieet en voelt zich sociaal voldoende gesteund.',
+  7:'{GN} is niet sterk gemotiveerd om zich aan het dieet te houden. Wel weet de cliënt goed wat het dieet inhoudt. Gezien de matige motivatie zijn de hoge scores op respons-effectiviteit, op eigen-effectiviteit en op sociale steun opvallend: {g} is er van overtuigd dat het volgen van het dieet zinvol is, verwacht weinig moeite met het volgen van het dieet en voelt zich sociaal voldoende gesteund.',
+  8:'{GN} is niet sterk gemotiveerd om zich aan het dieet te houden. Ook weet de cliënt niet precies wat het dieet inhoudt. Gezien de matige motivatie zijn de hoge scores op respons-effectiviteit, op eigen-effectiviteit en op sociale steun opvallend: {g} is er van overtuigd dat het volgen van het dieet zinvol is, verwacht weinig moeite met het volgen van het dieet en voelt zich sociaal voldoende gesteund.',
+  9:'{GN} is zeer gemotiveerd om zich aan het dieet te houden en heeft ook het gevoel goed te weten wat het dieet inhoudt. Toch heeft {g} ',
+  10:'{GN} is zeer gemotiveerd om zich aan het dieet te houden. Toch weet de cliënt niet precies wat het dieet inhoudt. Toch heeft {g} ',
+  11:'{GN} is zeer gemotiveerd om zich aan het dieet te houden en heeft ook het gevoel goed te weten wat het dieet inhoudt. Consistent met dit beeld zijn de hoge scores op respons-effectiviteit, op eigen-effectiviteit en op sociale steun: {g} is er van overtuigd dat het volgen van het dieet zinvol is, verwacht weinig moeite met het volgen van het dieet en voelt zich sociaal voldoende gesteund.',
+  12:'{GN} is zeer gemotiveerd om zich aan het dieet te houden. Toch weet de cliënt niet precies wat het dieet inhoudt. Wel heeft {g} hoge scores op respons-effectiviteit, op eigen-effectiviteit en op sociale steun: {g} is er van overtuigd dat het volgen van het dieet zinvol is, verwacht weinig moeite met het volgen van het dieet en voelt zich sociaal voldoende gesteund.'
+};
 
-  document.getElementById('btn-next').addEventListener('click', function() {
-    if (APP.currentIndex < APP.activeQuestions.length - 1) {
-      APP.currentIndex++;
-      renderQuestion();
+function diag3num(p, s, o) {
+  if(p==='L'&&s==='H'&&o==='H')return 1; if(p==='M'&&s==='H'&&o==='H')return 2;
+  if(p==='H'&&s==='L'&&o==='H')return 3; if(p==='H'&&s==='M'&&o==='H')return 4;
+  if(p==='H'&&s==='H'&&o==='L')return 5; if(p==='H'&&s==='H'&&o==='M')return 6;
+  if(p==='L'&&s==='L'&&o==='H')return 7; if(p==='M'&&s==='L'&&o==='H')return 8;
+  if(p==='L'&&s==='M'&&o==='H')return 9; if(p==='M'&&s==='M'&&o==='H')return 10;
+  if(p==='L'&&s==='H'&&o==='L')return 11; if(p==='L'&&s==='H'&&o==='M')return 12;
+  if(p==='M'&&s==='H'&&o==='L')return 13; if(p==='M'&&s==='H'&&o==='M')return 14;
+  if(p==='H'&&s==='L'&&o==='L')return 15; if(p==='H'&&s==='M'&&o==='L')return 16;
+  if(p==='H'&&s==='L'&&o==='M')return 17; if(p==='H'&&s==='M'&&o==='M')return 18;
+  if(p==='L'&&s==='L'&&o==='L')return 19; if(p==='M'&&s==='L'&&o==='L')return 20;
+  if(p==='M'&&s==='M'&&o==='L')return 21; if(p==='M'&&s==='M'&&o==='M')return 22;
+  if(p==='L'&&s==='M'&&o==='L')return 23; if(p==='L'&&s==='L'&&o==='M')return 24;
+  if(p==='M'&&s==='L'&&o==='M')return 25; if(p==='L'&&s==='M'&&o==='M')return 26;
+  return null;
+}
+
+function fill(txt, GN, g, B) {
+  return txt.replace(/{GN}/g,GN).replace(/{g}/g,g).replace(/{B}/g,B||'diverse redenen');
+}
+
+function barriere() {
+  var v = APP.answers.V2;
+  if (!v || !v.length) return 'diverse redenen';
+  if (v.length === 1) return v[0];
+  return v.slice(0,-1).join(', ') + ' en ' + v[v.length-1];
+}
+
+function buildText(sc) {
+  var isMan = APP.geslacht === 'man';
+  var GN = (isMan ? 'De heer ' : 'Mevrouw ') + APP.naam;
+  var g  = isMan ? 'hij' : 'zij';
+  var B  = barriere();
+  var a  = APP.answers;
+  var allH = sc.pros==='H' && sc.self==='H' && sc.soc==='H';
+  var d3n = diag3num(sc.pros, sc.self, sc.soc);
+  var d3txt = d3n ? fill(T3[d3n], GN, g, B) : '';
+
+  if (a.V0 === 1) {
+    var d1 = 0;
+    if(sc.gedrag==='L'&&sc.mot==='L')d1=1; else if(sc.gedrag==='L'&&sc.mot==='M')d1=2;
+    else if(sc.gedrag==='L'&&sc.mot==='H')d1=3; else if(sc.gedrag==='M'&&sc.mot==='L')d1=4;
+    else if(sc.gedrag==='M'&&sc.mot==='M')d1=5; else if(sc.gedrag==='M'&&sc.mot==='H')d1=6;
+    else if(sc.gedrag==='H'&&sc.mot==='L')d1=7; else if(sc.gedrag==='H'&&sc.mot==='M')d1=8;
+    else if(sc.gedrag==='H'&&sc.mot==='H')d1=9;
+    var part1 = fill(T1[d1], GN, g, B);
+    var part2 = '';
+    if (sc.gedrag==='H' && sc.mot==='H') {
+      part2 = allH ? fill(T2[1],GN,g,B) : fill(T2[2],GN,g,B) + d3txt;
     } else {
-      finishAssessment();
+      part2 = allH ? fill(T2[3],GN,g,B) : fill(T2[4],GN,g,B) + d3txt;
     }
-  });
+    return part1 + '\n\n' + part2;
+  } else {
+    var v3 = a.V3;
+    var d4 = 0;
+    if(sc.mot==='L'&&v3>2&&!allH)d4=1; else if(sc.mot==='L'&&v3<=2&&!allH)d4=2;
+    else if(sc.mot==='M'&&v3>2&&!allH)d4=3; else if(sc.mot==='M'&&v3<=2&&!allH)d4=4;
+    else if(sc.mot==='L'&&v3>2&&allH)d4=5; else if(sc.mot==='L'&&v3<=2&&allH)d4=6;
+    else if(sc.mot==='M'&&v3>2&&allH)d4=7; else if(sc.mot==='M'&&v3<=2&&allH)d4=8;
+    else if(sc.mot==='H'&&v3>2&&!allH)d4=9; else if(sc.mot==='H'&&v3<=2&&!allH)d4=10;
+    else if(sc.mot==='H'&&v3>2&&allH)d4=11; else if(sc.mot==='H'&&v3<=2&&allH)d4=12;
+    var base = fill(T4[d4], GN, g, B);
+    if (d4<=4 || d4===9 || d4===10) base += d3txt;
+    return base;
+  }
+}
 
-  document.getElementById('btn-download').addEventListener('click', function() {
-    downloadPdf(APP.userName);
+// ═══════════════════════════════════════════════════════
+// RESULTS
+// ═══════════════════════════════════════════════════════
+var BARS = [
+  { key:'gedrag', label:'Dieetgedrag',           tips:{H:'Dieet is goed gevolgd',           M:'Dieet kan beter worden gevolgd',       L:'Dieet is onvoldoende gevolgd'} },
+  { key:'mot',    label:'Motivatie',              tips:{H:'Motivatie is goed',               M:'Motivatie kan verbeterd worden',       L:'Motivatie is laag'} },
+  { key:'pros',   label:'Respons-effectiviteit',  tips:{H:'Vindt het dieet zinvol',          M:'Vindt het dieet niet heel erg zinvol', L:'Vindt dat het dieet weinig zin heeft'} },
+  { key:'self',   label:'Eigen-effectiviteit',    tips:{H:'Ervaart voldoende controle',      M:'Kan meer controle ervaren',            L:'Ervaart weinig controle'} },
+  { key:'soc',    label:'Sociale steun',          tips:{H:'Ervaart voldoende sociale steun', M:'Kan meer sociale steun gebruiken',     L:'Ervaart weinig sociale steun'} }
+];
+
+function showResults() {
+  var sc = calcScores();
+  var txt = buildText(sc);
+  var isMan = APP.geslacht==='man';
+  var title = (isMan ? 'De heer ' : 'Mevrouw ') + APP.naam;
+
+  document.getElementById('results-subtitle').textContent = 'Diagnose voor ' + title;
+  document.getElementById('diag-text').textContent = txt;
+
+  var bc = document.getElementById('bars-container');
+  bc.innerHTML = '';
+  BARS.forEach(function(b) {
+    if (b.key==='gedrag' && APP.answers.V0===2) return;
+    var level = sc[b.key];
+    var cls   = level==='H' ? 'green' : level==='M' ? 'orange' : 'red';
+    var lbl   = level==='H' ? 'Hoog'  : level==='M' ? 'Matig'  : 'Laag';
+    var tip   = b.tips[level] || '';
+    var pct   = sc.pct[b.key];
+    var row = document.createElement('div');
+    row.innerHTML =
+      '<div class="bar-row">'+
+        '<div class="bar-label">'+b.label+'</div>'+
+        '<div class="bar-track"><div class="bar-fill '+cls+'" data-pct="'+pct+'"></div></div>'+
+        '<div class="bar-badge '+cls+'">'+lbl+'</div>'+
+      '</div>'+
+      '<div class="bar-tooltip">'+tip+'</div>';
+    bc.appendChild(row);
   });
-});
+  setTimeout(function(){
+    document.querySelectorAll('.bar-fill').forEach(function(el){
+      el.style.width = el.getAttribute('data-pct')+'%';
+    });
+  }, 100);
+
+  // PDF prep
+  var pdfMeta = document.getElementById('pdf-meta');
+  pdfMeta.textContent = title + ' | ' + new Date().toLocaleDateString('nl-NL',{day:'numeric',month:'long',year:'numeric'});
+  var pb = document.getElementById('pdf-bars');
+  pb.innerHTML = '';
+  BARS.forEach(function(b){
+    if (b.key==='gedrag' && APP.answers.V0===2) return;
+    var level = sc[b.key];
+    var col = level==='H'?'#2e7d52':level==='M'?'#c46a00':'#b0292a';
+    var tip = b.tips[level]||'';
+    pb.innerHTML += '<div class="pdf-bar-row"><div class="pdf-bar-label">'+b.label+'</div><div class="pdf-dot" style="background:'+col+'"></div><div class="pdf-bar-tip">'+tip+'</div></div>';
+  });
+  document.getElementById('pdf-text').textContent = txt;
+
+  showScreen('screen-results');
+}
+
+// ═══════════════════════════════════════════════════════
+// PDF
+// ═══════════════════════════════════════════════════════
+function triggerPdf() {
+  var el = document.getElementById('pdf-layout');
+  el.style.display = 'block';
+  html2pdf().set({
+    margin:[15,15,15,15],
+    filename:'Vodimind_Diagnose_'+APP.naam.replace(/\s+/g,'_')+'.pdf',
+    image:{type:'jpeg',quality:0.97},
+    html2canvas:{scale:2},
+    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}
+  }).from(el).save().then(function(){ el.style.display='none'; });
+}
+
+// ═══════════════════════════════════════════════════════
+// SCREEN SWITCHER
+// ═══════════════════════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
 </script>
 </body>
 </html>
