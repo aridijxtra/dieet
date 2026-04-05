@@ -84,7 +84,7 @@ body{font-family:var(--font-body);background:var(--paper);color:var(--ink);min-h
 .bar-badge.red{background:var(--red-bg);color:var(--red)}
 .bar-tooltip{font-size:.82rem;color:var(--ink-light);grid-column:2/4;font-style:italic;margin-top:-8px}
 .diag-text{font-size:1rem;line-height:1.9;color:var(--ink-soft)}
-.pdf-layout{display:none;position:absolute;left:-9999px;top:0;width:794px;padding:60px 64px;background:#fff;font-family:sans-serif;color:#1a1a2e}
+.pdf-layout{display:none;position:fixed;left:0;top:0;width:794px;padding:60px 64px;background:#fff;font-family:sans-serif;color:#1a1a2e;z-index:-1000;opacity:0;pointer-events:none}
 .pdf-header{display:flex;justify-content:space-between;border-bottom:2px solid #2d5a8e;padding-bottom:20px;margin-bottom:36px}
 .pdf-logo{font-size:1.3rem;font-weight:700;color:#2d5a8e}
 .pdf-meta{font-size:.85rem;color:#4a4a6a;text-align:right}
@@ -679,14 +679,25 @@ function showResults() {
 // ═══════════════════════════════════════════════════════
 function triggerPdf() {
   var el = document.getElementById('pdf-layout');
-  el.style.display = 'block';
+  // Make visible and on-screen so html2canvas can capture it
+  el.style.display  = 'block';
+  el.style.opacity  = '1';
+  el.style.position = 'fixed';
+  el.style.left     = '0';
+  el.style.top      = '0';
+  el.style.zIndex   = '9999';
+
   html2pdf().set({
-    margin:[15,15,15,15],
-    filename:'Vodimind_Diagnose_'+APP.naam.replace(/\s+/g,'_')+'.pdf',
-    image:{type:'jpeg',quality:0.97},
-    html2canvas:{scale:2},
-    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}
-  }).from(el).save().then(function(){ el.style.display='none'; });
+    margin: [15, 15, 15, 15],
+    filename: 'Vodimind_Diagnose_' + APP.naam.replace(/\s+/g, '_') + '.pdf',
+    image: { type: 'jpeg', quality: 0.97 },
+    html2canvas: { scale: 2, useCORS: true, logging: false },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+  }).from(el).save().then(function() {
+    el.style.display  = 'none';
+    el.style.opacity  = '0';
+    el.style.zIndex   = '-1000';
+  });
 }
 
 // ═══════════════════════════════════════════════════════
