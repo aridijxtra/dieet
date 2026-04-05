@@ -678,26 +678,56 @@ function showResults() {
 // PDF
 // ═══════════════════════════════════════════════════════
 function triggerPdf() {
-  var el = document.getElementById('pdf-layout');
-  // Make visible and on-screen so html2canvas can capture it
-  el.style.display  = 'block';
-  el.style.opacity  = '1';
-  el.style.position = 'fixed';
-  el.style.left     = '0';
-  el.style.top      = '0';
-  el.style.zIndex   = '9999';
+  var isMan = APP.geslacht === 'man';
+  var GN    = (isMan ? 'De heer ' : 'Mevrouw ') + APP.naam;
+  var datum = new Date().toLocaleDateString('nl-NL', {day:'numeric', month:'long', year:'numeric'});
+  var diagText = document.getElementById('diag-text').textContent;
+  var barsHTML = '';
 
-  html2pdf().set({
-    margin: [15, 15, 15, 15],
-    filename: 'Vodimind_Diagnose_' + APP.naam.replace(/\s+/g, '_') + '.pdf',
-    image: { type: 'jpeg', quality: 0.97 },
-    html2canvas: { scale: 2, useCORS: true, logging: false },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-  }).from(el).save().then(function() {
-    el.style.display  = 'none';
-    el.style.opacity  = '0';
-    el.style.zIndex   = '-1000';
+  BARS.forEach(function(b) {
+    if (b.key === 'gedrag' && APP.answers.V0 === 2) return;
+    var sc    = calcScores();
+    var level = sc[b.key];
+    var col   = level==='H' ? '#2e7d52' : level==='M' ? '#c46a00' : '#b0292a';
+    var tip   = b.tips[level] || '';
+    barsHTML +=
+      '<tr>' +
+      '<td style="width:180px;font-weight:600;color:#4a4a6a;padding:6px 12px 6px 0;font-size:13px;">'+b.label+'</td>' +
+      '<td style="padding:6px 8px;"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:'+col+';margin-right:8px;vertical-align:middle;"></span>' +
+      '<span style="font-size:13px;color:#4a4a6a;font-style:italic;">'+tip+'</span></td>' +
+      '</tr>';
   });
+
+  var html =
+    '<!DOCTYPE html><html lang="nl"><head><meta charset="UTF-8">' +
+    '<title>Vodimind Diagnose - ' + APP.naam + '</title>' +
+    '<style>' +
+    'body{font-family:Georgia,serif;color:#1a1a2e;padding:40px 60px;max-width:700px;margin:0 auto}' +
+    'h1{font-size:22px;color:#2d5a8e;margin:0}' +
+    '.meta{font-size:13px;color:#4a4a6a;margin-top:4px}' +
+    '.divider{border:none;border-top:2px solid #2d5a8e;margin:20px 0}' +
+    'h2{font-size:15px;font-weight:700;color:#1a1a2e;margin:28px 0 12px;border-bottom:1px solid #e8e4dc;padding-bottom:6px}' +
+    'table{border-collapse:collapse;width:100%}' +
+    '.diag{font-size:14px;line-height:1.9;color:#4a4a6a;white-space:pre-wrap;margin-top:8px}' +
+    '.footer{margin-top:48px;border-top:1px solid #e8e4dc;padding-top:12px;font-size:11px;color:#aaa;text-align:center}' +
+    '@media print{body{padding:0} .no-print{display:none}}' +
+    '</style></head><body>' +
+    '<h1>Vodimind Kerndiagnose</h1>' +
+    '<div class="meta">' + GN + ' &nbsp;|&nbsp; ' + datum + '</div>' +
+    '<hr class="divider">' +
+    '<h2>Overzicht scores</h2>' +
+    '<table>' + barsHTML + '</table>' +
+    '<h2>Diagnose</h2>' +
+    '<div class="diag">' + diagText.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>' +
+    '<div class="footer">Vodimind &copy; Faculteit Sociale Wetenschappen</div>' +
+    '<div class="no-print" style="margin-top:32px;text-align:center">' +
+    '<button onclick="window.print()" style="padding:12px 32px;background:#2d5a8e;color:#fff;border:none;border-radius:6px;font-size:15px;cursor:pointer;">🖨 Afdrukken / Opslaan als PDF</button>' +
+    '</div>' +
+    '</body></html>';
+
+  var w = window.open('', '_blank');
+  w.document.write(html);
+  w.document.close();
 }
 
 // ═══════════════════════════════════════════════════════
