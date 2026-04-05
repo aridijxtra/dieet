@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Vodimind Kerndiagnose</title>
+<title>Gedragsdiagnose voeding</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
@@ -105,7 +105,7 @@ body{font-family:var(--font-body);background:var(--paper);color:var(--ink);min-h
   <div class="page-wrap">
     <header class="site-header">
       <div class="logo-mark">V</div>
-      <span class="logo-text">Vodimind</span>
+      <span class="logo-text">Vodia</span>
     </header>
     <main class="intro-main">
       <div class="intro-card">
@@ -700,7 +700,7 @@ function triggerPdf() {
 
   var html =
     '<!DOCTYPE html><html lang="nl"><head><meta charset="UTF-8">' +
-    '<title>Vodimind Diagnose - ' + APP.naam + '</title>' +
+    '<title>Gedragsdiagnose voeding - ' + APP.naam + '</title>' +
     '<style>' +
     'body{font-family:Georgia,serif;color:#1a1a2e;padding:40px 60px;max-width:700px;margin:0 auto}' +
     'h1{font-size:22px;color:#2d5a8e;margin:0}' +
@@ -719,7 +719,7 @@ function triggerPdf() {
     '<table>' + barsHTML + '</table>' +
     '<h2>Diagnose</h2>' +
     '<div class="diag">' + diagText.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>' +
-    '<div class="footer">Vodimind &copy; Faculteit Sociale Wetenschappen</div>' +
+    '<div class="footer">Dijkstra &copy; GMW</div>' +
     '<div class="no-print" style="margin-top:32px;text-align:center">' +
     '<button onclick="window.print()" style="padding:12px 32px;background:#2d5a8e;color:#fff;border:none;border-radius:6px;font-size:15px;cursor:pointer;">🖨 Afdrukken / Opslaan als PDF</button>' +
     '</div>' +
