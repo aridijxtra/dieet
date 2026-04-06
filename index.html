@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Vodimind Kerndiagnose</title>
+<title>Uw dieet</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
@@ -105,12 +105,12 @@ body{font-family:var(--font-body);background:var(--paper);color:var(--ink);min-h
   <div class="page-wrap">
     <header class="site-header">
       <div class="logo-mark">V</div>
-      <span class="logo-text">Vodimind</span>
+      <span class="logo-text">Voeding</span>
     </header>
     <main class="intro-main">
       <div class="intro-card">
-        <h1>Kerndiagnose</h1>
-        <p class="intro-text">De onderstaande vragen gaan over uw dieet en wat u daar van vindt. Kies de uitspraak die het beste bij u past. Ook als u nog niet begonnen bent met het dieet, probeer dan de vragen toch in te vullen. Het is het beste om zo eerlijk mogelijk te antwoorden. Er zijn geen foute of goede antwoorden, het gaat om uw mening.</p>
+        <h1>Uw dieet</h1>
+        <p class="intro-text">Er is u een bepaald voedingspatroon voorgeschreven, dat noemen we hier uw dieet. Hier enkele vragen over uw dieet. Kies de uitspraak die het beste bij u past, ook als u nog niet begonnen bent met het dieet. Het is het beste om zo eerlijk mogelijk te antwoorden. Er zijn geen foute of goede antwoorden, het gaat om uw mening.</p>
         <div class="basis-fields">
           <div class="field-group">
             <label for="input-naam">Naam</label>
@@ -124,7 +124,7 @@ body{font-family:var(--font-body);background:var(--paper);color:var(--ink);min-h
             </div>
           </div>
         </div>
-        <button type="button" id="btn-start" class="btn-primary" disabled onclick="startAssessment()">Begin assessment</button>
+        <button type="button" id="btn-start" class="btn-primary" disabled onclick="startAssessment()">Begin de vragenlijst</button>
         <p id="intro-error" class="field-error hidden">Vul uw naam in en selecteer uw geslacht.</p>
       </div>
     </main>
@@ -135,7 +135,7 @@ body{font-family:var(--font-body);background:var(--paper);color:var(--ink);min-h
   <div class="page-wrap">
     <header class="site-header">
       <div class="logo-mark">V</div>
-      <span class="logo-text">Vodimind</span>
+      <span class="logo-text">Voeding</span>
       <div class="progress-wrap">
         <div class="progress-bar"><div id="progress-fill" class="progress-fill"></div></div>
         <span id="progress-label" class="progress-label">Vraag 1</span>
@@ -155,7 +155,7 @@ body{font-family:var(--font-body);background:var(--paper);color:var(--ink);min-h
   <div class="page-wrap">
     <header class="site-header">
       <div class="logo-mark">V</div>
-      <span class="logo-text">Vodimind</span>
+      <span class="logo-text">Voeding</span>
       <button type="button" class="btn-download" onclick="triggerPdf()">↓ Download PDF</button>
     </header>
     <main class="results-main">
@@ -177,14 +177,14 @@ body{font-family:var(--font-body);background:var(--paper);color:var(--ink);min-h
 
 <div id="pdf-layout" class="pdf-layout">
   <div class="pdf-header">
-    <div class="pdf-logo">Vodimind Kerndiagnose</div>
+    <div class="pdf-logo">Gedragsdiagnose Voeding</div>
     <div class="pdf-meta" id="pdf-meta"></div>
   </div>
   <h2 class="pdf-section-title">Overzicht scores</h2>
   <div id="pdf-bars"></div>
   <h2 class="pdf-section-title">Diagnose</h2>
   <div id="pdf-text" class="pdf-diag"></div>
-  <div class="pdf-footer">Vodimind &copy; Faculteit Sociale Wetenschappen</div>
+  <div class="pdf-footer">Dijkstra &copy; GMW</div>
 </div>
 
 <script>
@@ -700,7 +700,7 @@ function triggerPdf() {
 
   var html =
     '<!DOCTYPE html><html lang="nl"><head><meta charset="UTF-8">' +
-    '<title>Vodimind Diagnose - ' + APP.naam + '</title>' +
+    '<title>Gedragsdiagnose Voeding - ' + APP.naam + '</title>' +
     '<style>' +
     'body{font-family:Georgia,serif;color:#1a1a2e;padding:40px 60px;max-width:700px;margin:0 auto}' +
     'h1{font-size:22px;color:#2d5a8e;margin:0}' +
@@ -713,14 +713,14 @@ function triggerPdf() {
     '@media print{body{padding:0} .no-print{display:none} .dot{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}}'
     + '* {-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}' +
     '</style></head><body>' +
-    '<h1>Vodimind Kerndiagnose</h1>' +
+    '<h1>Gedragsdiagnose Voeding</h1>' +
     '<div class="meta">' + GN + ' &nbsp;|&nbsp; ' + datum + '</div>' +
     '<hr class="divider">' +
     '<h2>Overzicht scores</h2>' +
     '<table>' + barsHTML + '</table>' +
     '<h2>Diagnose</h2>' +
     '<div class="diag">' + diagText.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>' +
-    '<div class="footer">Vodimind &copy; Faculteit Sociale Wetenschappen</div>' +
+    '<div class="footer">Dijkstra &copy; GMW</div>' +
     '<div class="no-print" style="margin-top:32px;text-align:center">' +
     '<p style="font-size:12px;color:#888;margin-bottom:12px;">Tip: kies in het afdrukvenster bij <b>Meer instellingen</b> de optie <b>Achtergrondafbeeldingen</b> aan om de kleuren te zien.</p>' +
     '<button onclick="window.print()" style="padding:12px 32px;background:#2d5a8e;color:#fff;border:none;border-radius:6px;font-size:15px;cursor:pointer;">🖨 Afdrukken / Opslaan als PDF</button>' +
